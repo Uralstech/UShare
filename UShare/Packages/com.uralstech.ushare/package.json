@@ -1,0 +1,17 @@
+{
+  "name": "com.uralstech.ushare",
+  "displayName": "UShare",
+  "description": "Share sheet support for mobile platforms.",
+  "keywords": [],
+  "version": "1.0.0-preview.1",
+  "hideInEditor": false,
+  "author": {
+    "name": "Udayshankar Ravikumar",
+    "url": "https://github.com/Uralstech"
+  },
+  "dependencies": {
+    "com.unity.modules.androidjni": "1.0.0",
+    "com.uralstech.utils.singleton": "1.2.1",
+    "com.uralstech.utils.loggers": "1.0.0"
+  }
+}
