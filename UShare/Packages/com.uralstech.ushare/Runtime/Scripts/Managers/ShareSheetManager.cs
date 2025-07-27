@@ -27,7 +27,7 @@ namespace Uralstech.UShare
     /// Class to handle the share sheet functionality.
     /// </summary>
     [AddComponentMenu("Uralstech/UShare/Share Sheet Manager")]
-    public class ShareSheetManager : DontCreateNewSingleton<ShareSheetManager>
+    public class ShareSheetManager : Singleton<ShareSheetManager>
     {
         /// <summary>
         /// The fully qualified name of the native Android plugin class.
@@ -78,10 +78,8 @@ namespace Uralstech.UShare
 #endif
 
         /// <inheritdoc/>
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
-
             if (_persistBetweenScenes)
                 DontDestroyOnLoad(gameObject);
 
