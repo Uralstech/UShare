@@ -20,23 +20,74 @@ namespace Uralstech.UShare
     /// </summary>
     public static class CommonMimeTypes
     { 
+        /// <summary>
+        /// Use this when sharing data of multiple unrelated types.
+        /// </summary>
         public const string Multitype       = "*/*";
 
+        /// <summary>
+        /// Use this when sharing text of multiple types.
+        /// </summary>
         public const string TextMultitype   = "text/*";
+
+        /// <summary>
+        /// Plain text.
+        /// </summary>
         public const string TextPlain       = "text/plain";
+
+        /// <summary>
+        /// RTF files.
+        /// </summary>
         public const string TextRtf         = "text/rtf";
+
+        /// <summary>
+        /// HTML files.
+        /// </summary>
         public const string TextHtml        = "text/html";
+
+        /// <summary>
+        /// JSON files.
+        /// </summary>
         public const string TextJson        = "text/json";
 
+        /// <summary>
+        /// Use this when sharing images of multiple types.
+        /// </summary>
         public const string ImageMultitype  = "image/*";
+
+        /// <summary>
+        /// JPG/JPEG images.
+        /// </summary>
         public const string ImageJpg        = "image/jpg";
+
+        /// <summary>
+        /// PNG images.
+        /// </summary>
         public const string ImagePng        = "image/png";
+
+        /// <summary>
+        /// GIF images/videos.
+        /// </summary>
         public const string ImageGif        = "image/gif";
 
+        /// <summary>
+        /// Use this when sharing videos of multiple types.
+        /// </summary>
         public const string VideoMultitype  = "video/*";
+
+        /// <summary>
+        /// MP4 videos.
+        /// </summary>
         public const string VideoMp4        = "video/mp4";
+
+        /// <summary>
+        /// 3GP videos.
+        /// </summary>
         public const string Video3gp        = "video/3gp";
 
+        /// <summary>
+        /// PDF files.
+        /// </summary>
         public const string ApplicationPdf  = "application/pdf";
     }
 }

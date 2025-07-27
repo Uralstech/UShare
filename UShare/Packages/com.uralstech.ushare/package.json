@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "com.unity.modules.androidjni": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
     "com.uralstech.utils.singleton": "1.2.1",
     "com.uralstech.utils.loggers": "1.0.0"
-  }
+  },
+  "unity": "6000.0"
 }
