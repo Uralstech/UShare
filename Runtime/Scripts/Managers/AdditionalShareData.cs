@@ -16,23 +16,30 @@
 namespace Uralstech.UShare
 {
     /// <summary>
-    /// Additional data and metadata regarding a share event.
+    /// Additional data regarding a share event.
     /// </summary>
     public struct AdditionalShareData
     {
         /// <summary>
-        /// Override the default file path ("[cacheDir]/ShareCache" on Android) to the file(s) being shared.
+        /// Override the path to the directory containing the file(s) to share.
         /// </summary>
         public string? BasePath;
 
         /// <summary>
-        /// (Android) Override the FileProvider authority for the file being shared.
+        /// (Android) Override the FileProvider authority for the file(s) being shared.
         /// </summary>
         public string? AndroidFileProviderAuthority;
 
         /// <summary>
         /// Additional text to be shared along with the main content.
         /// </summary>
+        /// <remarks>
+        /// You can usually get away with having text in shared content along with other data
+        /// <b>without</b> having to declare it in the MIME type you provide for the request.
+        /// For example, most apps will accept "image/png" share requests with additional text,
+        /// but WhatsApp will send each image as individual messages with the text attached to
+        /// <i>every</i> message.
+        /// </remarks>
         public string? AdditionalText;
 
         /// <summary>
@@ -43,12 +50,12 @@ namespace Uralstech.UShare
         /// <summary>
         /// Whether to keep the file(s) after the user regains focus on the app after sharing.
         /// This only applies to share events where you provide the raw data to be shared,
-        /// like with <see cref="ShareSheetManager.ShareData(string, byte[], string, AdditionalShareData)"/>,
+        /// like with <see cref="ShareSheetManager.ShareData(string, string, byte[], AdditionalShareData)"/>,
         /// and not for cases where the data is already present in the app's storage.
         /// </summary>
         /// <remarks>
         /// By default, the data is deleted from the app's storage when the user
-        /// regains focus on the app after sharing to prevent the directory
+        /// regains focus on the app after sharing to prevent the share directory
         /// from getting too big.
         /// </remarks>
         public bool KeepDataAfterFocusRegain;

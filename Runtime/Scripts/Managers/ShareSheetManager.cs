@@ -29,31 +29,45 @@ namespace Uralstech.UShare
     [AddComponentMenu("Uralstech/UShare/Share Sheet Manager")]
     public class ShareSheetManager : DontCreateNewSingleton<ShareSheetManager>
     {
-        /// <summary>The fully qualified name of the native Android plugin helper class.</summary>
+        /// <summary>
+        /// The fully qualified name of the native Android plugin class.
+        /// </summary>
         protected const string AndroidNativeClass = "com.uralstech.ushare.ShareHelper";
 
-        /// <summary>The default directory used to temporarily save data that is shared.</summary>
+        /// <summary>
+        /// The default directory used to temporarily save data that is shared.
+        /// </summary>
         protected const string DefaultSaveSubDirectory = "ShareCache";
 
         private static readonly string s_loggerTag = $"{nameof(UShare)}.{nameof(ShareSheetManager)}";
         private static readonly TaggedRALogger s_logger = new(s_loggerTag);
 
-        /// <summary>The Android FileProvider URI authority the application has set in its manifest to use for share actions.</summary>
+        /// <summary>
+        /// The Android FileProvider URI authority the application has set in its manifest to use for share actions.
+        /// </summary>
         [Tooltip("The Android FileProvider URI authority the application has set in its manifest to use for share actions.")]
         public string AndroidFileProviderAuthority;
 
-        /// <summary>Should this object persist between scenes?</summary>
+        /// <summary>
+        /// Should this object persist between scenes?
+        /// </summary>
         [Tooltip("Should this object persist between scenes?")]
         [SerializeField] protected bool _persistBetweenScenes = false;
 
 #if UNITY_ANDROID
-        /// <summary>Utility object for Android which provides paths to where shareable data can be saved.</summary>
+        /// <summary>
+        /// Utility object for Android which provides paths to where shareable data can be saved.
+        /// </summary>
         public AndroidPathHelper AndroidPathHelper { get; protected set; }
 
-        /// <summary>The native plugin instance.</summary>
+        /// <summary>
+        /// The native plugin instance.
+        /// </summary>
         protected AndroidJavaObject? _pluginInstance;
 
-        /// <summary>List of files scheduled for deletion after a share action has been completed.</summary>
+        /// <summary>
+        /// List of files scheduled for deletion after a share action has been completed.
+        /// </summary>
         protected readonly List<string> _filesScheduledForDeletion = new();
 #endif
 
@@ -78,8 +92,9 @@ namespace Uralstech.UShare
         /// <inheritdoc/>
         protected void OnApplicationFocus(bool focus)
         {
-            if (focus)
+            if (focus && _filesScheduledForDeletion.Count > 0)
             {
+                s_logger.Log("Focus regained, erasing shared files from app storage.");
                 foreach (string file in _filesScheduledForDeletion)
                 {
                     try
