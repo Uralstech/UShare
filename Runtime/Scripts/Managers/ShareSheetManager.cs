@@ -39,13 +39,19 @@ namespace Uralstech.UShare
         /// </summary>
         protected const string DefaultSaveSubDirectory = "ShareCache";
 
+        /// <summary>
+        /// Default format for the Android FileProvider URI authority.
+        /// </summary>
+        protected const string DefaultFileProviderAuthorityFormat = "{0}.FileProvider";
+
         private static readonly string s_loggerTag = $"{nameof(UShare)}.{nameof(ShareSheetManager)}";
         private static readonly TaggedRALogger s_logger = new(s_loggerTag);
 
         /// <summary>
         /// The Android FileProvider URI authority the application has set in its manifest to use for share actions.
+        /// If not provided, defaults to "{Application.identifier}.FileProvider".
         /// </summary>
-        [Tooltip("The Android FileProvider URI authority the application has set in its manifest to use for share actions.")]
+        [Tooltip("The Android FileProvider URI authority the application has set in its manifest to use for share actions. If not provided, defaults to \"{Application.identifier}.FileProvider\".")]
         public string AndroidFileProviderAuthority;
 
         /// <summary>
@@ -85,6 +91,9 @@ namespace Uralstech.UShare
             using AndroidJavaClass classObject = new(AndroidNativeClass);
             _pluginInstance = classObject.CallStatic<AndroidJavaObject>("getInstance", AndroidApplication.currentContext);
             AndroidPathHelper = new AndroidPathHelper(_pluginInstance);
+
+            if (string.IsNullOrEmpty(AndroidFileProviderAuthority))
+                AndroidFileProviderAuthority = string.Format(DefaultFileProviderAuthorityFormat, Application.identifier);
 #endif
         }
 
