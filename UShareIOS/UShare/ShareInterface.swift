@@ -24,6 +24,38 @@ public func shareText(textPtr: UnsafePointer<CChar>, titlePtr: UnsafePointer<CCh
     return shareData(data: [ShareableText(text: text, title: title)]);
 }
 
+@_cdecl("ushare_interface_share_file")
+public func shareFile(
+    timestamp: Int64,
+    filePathPtr: UnsafePointer<CChar>,
+    textPtr: UnsafePointer<CChar>?,
+    titlePtr: UnsafePointer<CChar>?,
+    onDoneCallback: @convention(c) @escaping (Int64) -> Void
+) -> Bool {
+    logger.log("Sharing file.")
+    
+    let title = titlePtr.map { String(cString: $0) }
+    let text = textPtr.map({ String(cString: $0) })
+    let filePath = String(cString: filePathPtr)
+    
+    let callback = { onDoneCallback(timestamp) }
+    if let image = UIImage(contentsOfFile: filePath) {
+        let shareableImage = ShareableImage(image: image, title: title, text: text)
+        guard let text = text else {
+            return shareData(data: [shareableImage], onDone: callback)
+        }
+        
+        return shareData(data: [shareableImage, text], onDone: callback)
+    }
+    
+    let shareableUri = ShareableUri(uri: URL(fileURLWithPath: filePath), title: title ?? text)
+    guard let text = text else {
+        return shareData(data: [shareableUri], onDone: callback)
+    }
+    
+    return shareData(data: [shareableUri, text], onDone: callback)
+}
+
 @_cdecl("ushare_interface_share_image")
 public func shareImage(imagePtr: UnsafeMutableRawPointer, size: Int32, textPtr: UnsafePointer<CChar>?, titlePtr: UnsafePointer<CChar>?) -> Bool {
     logger.log("Sharing image.")
@@ -82,13 +114,21 @@ public func shareImages(
     return shareData(data: sharedContent)
 }
 
-private func shareData(data: [Any]) -> Bool {
+private func shareData(data: [Any], onDone: (() -> Void)? = nil) -> Bool {
     guard let rootViewController = getRootViewController() else {
         logger.error("Could not find a root view controller to present the share sheet.")
         return false
     }
     
     let activityViewController = UIActivityViewController(activityItems: data, applicationActivities: nil);
+    
+    if let onDone = onDone {
+        activityViewController.completionWithItemsHandler = { activityType, completed, returnedItems, error in
+            logger.log("Shared to \(activityType?.rawValue ?? "nil") with result: \(completed), error: \(error?.localizedDescription ?? "nil")")
+            onDone()
+        }
+    }
+    
     if let popoverController = activityViewController.popoverPresentationController {
         popoverController.sourceView = rootViewController.view
         popoverController.sourceRect = CGRect(x: rootViewController.view.bounds.midX, y: rootViewController.view.bounds.midY, width: 0, height: 0)

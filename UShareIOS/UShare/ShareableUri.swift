@@ -16,34 +16,28 @@ import Foundation
 import LinkPresentation
 import UIKit
 
-final class ShareableImage: NSObject, UIActivityItemSource {
-    private let image: UIImage
+final class ShareableUri: NSObject, UIActivityItemSource {
+    private let uri: URL
     private let title: String?
-    private let text: String?
 
-    init(image: UIImage, title: String?, text: String?) {
-        self.image = image
+    init(uri: URL, title: String?) {
+        self.uri = uri
         self.title = title
-        self.text = text
         super.init()
     }
 
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        return image
+        return uri
     }
 
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        return image
+        return uri
     }
 
     func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
         let metadata = LPLinkMetadata()
-        metadata.imageProvider = NSItemProvider(object: image)
-        metadata.title = title ?? text
-        
-        if title != nil, let text = text {
-            metadata.originalURL = URL(fileURLWithPath: text)
-        }
+        metadata.originalURL = uri
+        metadata.title = title
         
         return metadata
     }
