@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Android;
 using Uralstech.Utils.Loggers;
@@ -149,11 +150,16 @@ namespace Uralstech.UShare
         /// </summary>
         /// <param name="text">The text to share.</param>
         /// <param name="title">Optional title for the share sheet (Android 10+).</param>
-        public void ShareText(string text, string? title = null)
+        /// <returns>If the share request was executed successfully.</returns>
+        public bool ShareText(string text, string? title = null)
         {
 #if UNITY_ANDROID
             s_logger.Log("Sharing text using Android plugin.");
             _pluginInstance!.Call("shareText", text, title);
+            return true;
+#elif UNITY_IOS
+            s_logger.Log("Sharing text using iOS plugin.");
+            return IOSNativeCalls.ushare_interface_share_text(text, title);
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(ShareText)} for the current platform.");
 #endif
@@ -197,6 +203,21 @@ namespace Uralstech.UShare
             }
 
             return ShareFile(contentType, fileName, additionalData);
+#elif UNITY_IOS
+            if (contentType.StartsWith("image/"))
+            {
+                s_logger.Log("Sharing image using iOS plugin.");
+
+                unsafe
+                {
+                    fixed (byte* dataPtr = data)
+                    {
+                        return IOSNativeCalls.ushare_interface_share_image(new IntPtr(dataPtr), data.Length, additionalData.AdditionalText, additionalData.Title);
+                    }
+                }
+            }
+
+            return false;
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(ShareData)} for the current platform.");
 #endif
@@ -247,6 +268,41 @@ namespace Uralstech.UShare
             }
 
             return ShareFiles(contentType, fileNames, additionalData);
+#elif UNITY_IOS
+            if (contentType.StartsWith("image/"))
+            {
+                s_logger.Log("Sharing images using iOS plugin.");
+
+                int count = files.Length;
+                GCHandle[] gcHandles = new GCHandle[count];
+                IntPtr[] imagePtrs = new IntPtr[count];
+                int[] sizes = new int[count];
+
+                try
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        byte[] data = files[i].Data;
+
+                        GCHandle handle = gcHandles[i] = GCHandle.Alloc(data, GCHandleType.Pinned);
+                        imagePtrs[i] = handle.AddrOfPinnedObject();
+                        sizes[i] = data.Length;
+                    }
+
+                    return IOSNativeCalls.ushare_interface_share_images(imagePtrs, sizes, count, additionalData.AdditionalText, additionalData.Title);
+                }
+                finally
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        GCHandle gcHandle = gcHandles[i];
+                        if (gcHandle.IsAllocated)
+                            gcHandle.Free(); 
+                    }
+                }
+            }
+
+            return false;
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(ShareData)} for the current platform.");
 #endif
