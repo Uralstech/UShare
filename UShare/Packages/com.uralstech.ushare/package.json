@@ -9,6 +9,14 @@
     "name": "Udayshankar Ravikumar",
     "url": "https://github.com/Uralstech"
   },
+  "documentationUrl": "https://uralstech.github.io/UShare/",
+  "changelogUrl": "https://github.com/Uralstech/UShare/releases",
+  "licensesUrl": "https://github.com/Uralstech/UShare/blob/master/LICENSE",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "repository": "https://github.com/Uralstech/UShare.git"
+  },
   "dependencies": {
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.jsonserialize": "1.0.0",
