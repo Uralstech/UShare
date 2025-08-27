@@ -34,6 +34,12 @@ namespace Uralstech.UShare.Editor
         /// <summary>Custom shareable directories for Android's FileProvider. See <see href="https://developer.android.com/training/secure-file-sharing/setup-sharing#DefineMetaData">"Specify shareable directories"</see>.</summary>
         public string CustomFileProviderPathsAndroid = string.Empty;
 
+        /// <summary>Should the exported iOS XCode project's Info.plist file be patched by the editor script?</summary>
+        public bool PatchInfoPlistIOS = false;
+
+        /// <summary>Usage description for sharing data to the user's gallery on iOS.</summary>
+        public string PhotoLibraryAdditionsUsageDescriptionIOS = "This lets you save images directly to your Photos app.";
+
         /// <summary>
         /// Gets/creates an instance of <see cref="UShareBuildSettings"/> from the Unity ProjectSettings folder.
         /// </summary>
