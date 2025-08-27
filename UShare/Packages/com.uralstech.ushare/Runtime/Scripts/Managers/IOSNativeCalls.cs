@@ -53,6 +53,19 @@ namespace Uralstech.UShare
         public static extern bool ushare_interface_share_file(long timestamp, string filePath, string? additionalText, string? title, ShareFileCallback callback);
 
         /// <summary>
+        /// Shares multiple files using iOS's UIActivityViewController.
+        /// </summary>
+        /// <param name="timestamp">The timestamp of the request.</param>
+        /// <param name="filePathPtrs">The pointers to the paths of the files to share.</param>
+        /// <param name="count">The total number of files to share.</param>
+        /// <param name="additionalText">Optional text to share along with the image.</param>
+        /// <param name="title">An optional title for the share sheet.</param>
+        /// <param name="callback">Called when UIActivityViewController has completed its work.</param>
+        /// <returns>If the share request was executed successfully.</returns>
+        [DllImport("__Internal")]
+        public static extern bool ushare_interface_share_files(long timestamp, IntPtr[] filePathPtrs, int count, string? additionalText, string? title, ShareFileCallback callback);
+
+        /// <summary>
         /// Shares an image using iOS's UIActivityViewController.
         /// </summary>
         /// <param name="imagePtr">A pointer to the image's data.</param>

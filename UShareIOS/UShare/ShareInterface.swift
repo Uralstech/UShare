@@ -16,8 +16,12 @@ import UIKit
 import LinkPresentation
 
 @_cdecl("ushare_interface_share_text")
-public func shareText(textPtr: UnsafePointer<CChar>, titlePtr: UnsafePointer<CChar>?) -> Bool {
+public func shareText(textPtr: UnsafePointer<CChar>?, titlePtr: UnsafePointer<CChar>?) -> Bool {
     logger.log("Sharing text.")
+    guard let textPtr = textPtr else {
+        logger.error("Text was nil.")
+        return false
+    }
 
     let text = String(cString: textPtr)
     let title = titlePtr.map({ String(cString: $0) })
@@ -27,12 +31,17 @@ public func shareText(textPtr: UnsafePointer<CChar>, titlePtr: UnsafePointer<CCh
 @_cdecl("ushare_interface_share_file")
 public func shareFile(
     timestamp: Int64,
-    filePathPtr: UnsafePointer<CChar>,
+    filePathPtr: UnsafePointer<CChar>?,
     textPtr: UnsafePointer<CChar>?,
     titlePtr: UnsafePointer<CChar>?,
     onDoneCallback: @convention(c) @escaping (Int64) -> Void
 ) -> Bool {
     logger.log("Sharing file.")
+    guard let filePathPtr = filePathPtr else {
+        logger.error("File path was nil.")
+        onDoneCallback(timestamp)
+        return false
+    }
     
     let title = titlePtr.map { String(cString: $0) }
     let text = textPtr.map({ String(cString: $0) })
@@ -56,9 +65,64 @@ public func shareFile(
     return shareData(data: [shareableUri, text], onDone: callback)
 }
 
+@_cdecl("ushare_interface_share_files")
+public func shareFiles(
+    timestamp: Int64,
+    filePathsPtr: UnsafePointer<UnsafePointer<CChar>?>?,
+    count: Int32,
+    textPtr: UnsafePointer<CChar>?,
+    titlePtr: UnsafePointer<CChar>?,
+    onDoneCallback: @convention(c) @escaping (Int64) -> Void
+) -> Bool {
+    logger.log("Sharing files.")
+    guard let filePathsPtr = filePathsPtr else {
+        logger.error("File paths were nil.")
+        onDoneCallback(timestamp)
+        return false
+    }
+    
+    let title = titlePtr.map { String(cString: $0) }
+    let text = textPtr.map({ String(cString: $0) })
+    let callback = { onDoneCallback(timestamp) }
+    
+    var sharedContent: [Any] = []
+    for i in 0..<Int(count) {
+        guard let filePathPtr = filePathsPtr[i] else {
+            logger.error("nil file path encountered in array.")
+            onDoneCallback(timestamp)
+            return false
+        }
+        
+        let filePath = String(cString: filePathPtr)
+        let image = UIImage(contentsOfFile: filePath)
+        
+        if i == 0 {
+            if let image = image {
+                sharedContent.append(ShareableImage(image: image, title: title, text: text))
+            } else {
+                sharedContent.append(ShareableUri(uri: URL(fileURLWithPath: filePath), title: title))
+            }
+        } else if let image = image {
+            sharedContent.append(image)
+        } else {
+            sharedContent.append(URL(fileURLWithPath: filePath))
+        }
+    }
+    
+    if let text = text {
+        sharedContent.append(text)
+    }
+    
+    return shareData(data: sharedContent, onDone: callback)
+}
+
 @_cdecl("ushare_interface_share_image")
-public func shareImage(imagePtr: UnsafeMutableRawPointer, size: Int32, textPtr: UnsafePointer<CChar>?, titlePtr: UnsafePointer<CChar>?) -> Bool {
+public func shareImage(imagePtr: UnsafeMutableRawPointer?, size: Int32, textPtr: UnsafePointer<CChar>?, titlePtr: UnsafePointer<CChar>?) -> Bool {
     logger.log("Sharing image.")
+    guard let imagePtr = imagePtr else {
+        logger.log("Image was nil.")
+        return false;
+    }
     
     let data = Data(bytes: imagePtr, count: Int(size))
     guard let image = UIImage(data: data) else {
@@ -67,32 +131,37 @@ public func shareImage(imagePtr: UnsafeMutableRawPointer, size: Int32, textPtr: 
     }
     
     let title = titlePtr.map { String(cString: $0) }
-    guard let text = textPtr.map({ String(cString: $0) }) else {
-        let shareableImage = ShareableImage(image: image, title: title, text: nil)
+    let text = textPtr.map { String(cString: $0) }
+    let shareableImage = ShareableImage(image: image, title: title, text: text)
+    
+    if let text = text {
+        return shareData(data: [shareableImage, text])
+    } else {
         return shareData(data: [shareableImage])
     }
-    
-    let shareableImage = ShareableImage(image: image, title: title, text: text)
-    return shareData(data: [shareableImage, text])
 }
 
 @_cdecl("ushare_interface_share_images")
 public func shareImages(
-    imagePtrs: UnsafePointer<UnsafeMutableRawPointer>,
-    sizes: UnsafePointer<Int32>,
+    imagePtrs: UnsafePointer<UnsafeMutableRawPointer>?,
+    sizes: UnsafePointer<Int32>?,
     count: Int32,
     textPtr: UnsafePointer<CChar>?,
     titlePtr: UnsafePointer<CChar>?
 ) -> Bool {
     logger.log("Sharing images.")
+    guard let imagePtrs = imagePtrs, let sizes = sizes else {
+        logger.error("Images or sizes were nil.")
+        return false
+    }
     
     let title = titlePtr.map { String(cString: $0) }
     let text = textPtr.map({ String(cString: $0) })
     
     var sharedContent: [Any] = []
-    for i in 0..<count {
-        let imagePtr = imagePtrs[Int(i)]
-        let size = sizes[Int(i)]
+    for i in 0..<Int(count) {
+        let imagePtr = imagePtrs[i]
+        let size = sizes[i]
         
         let data = Data(bytes: imagePtr, count: Int(size))
         guard let image = UIImage(data: data) else {
@@ -117,6 +186,7 @@ public func shareImages(
 private func shareData(data: [Any], onDone: (() -> Void)? = nil) -> Bool {
     guard let rootViewController = getRootViewController() else {
         logger.error("Could not find a root view controller to present the share sheet.")
+        onDone?()
         return false
     }
     
