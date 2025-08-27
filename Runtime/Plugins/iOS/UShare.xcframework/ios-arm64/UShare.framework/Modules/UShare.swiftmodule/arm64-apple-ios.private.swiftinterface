@@ -1,0 +1,23 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.1.2 effective-5.10 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
+// swift-module-flags: -target arm64-apple-ios14.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name UShare
+// swift-module-flags-ignorable:  -interface-compiler-version 6.1.2
+import Foundation
+import LinkPresentation
+import Swift
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import os.log
+import os
+@_cdecl("ushare_interface_share_text")
+public func shareText(textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?) -> Swift.Bool
+@_cdecl("ushare_interface_share_file")
+public func shareFile(timestamp: Swift.Int64, filePathPtr: Swift.UnsafePointer<Swift.CChar>?, textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?, onDoneCallback: @convention(c) (Swift.Int64) -> Swift.Void) -> Swift.Bool
+@_cdecl("ushare_interface_share_files")
+public func shareFiles(timestamp: Swift.Int64, filePathsPtr: Swift.UnsafePointer<Swift.UnsafePointer<Swift.CChar>?>?, count: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?, onDoneCallback: @convention(c) (Swift.Int64) -> Swift.Void) -> Swift.Bool
+@_cdecl("ushare_interface_share_image")
+public func shareImage(imagePtr: Swift.UnsafeMutableRawPointer?, size: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?) -> Swift.Bool
+@_cdecl("ushare_interface_share_images")
+public func shareImages(imagePtrs: Swift.UnsafePointer<Swift.UnsafeMutableRawPointer>?, sizes: Swift.UnsafePointer<Swift.Int32>?, count: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?) -> Swift.Bool

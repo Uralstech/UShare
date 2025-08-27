@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Android;
 using Uralstech.Utils.Loggers;
@@ -365,6 +366,44 @@ namespace Uralstech.UShare
                 additionalData.BasePath,
                 additionalData.AdditionalText,
                 additionalData.Title);
+#elif UNITY_IOS
+            s_logger.Log("Sharing files using iOS plugin.");
+
+            int count = fileNames.Length;
+            IntPtr[] pathPtrs = new IntPtr[count];
+            string dirPath = additionalData.BasePath ?? GetDefaultBasePath();
+
+            try
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    string filePath = $"{Path.Join(dirPath, fileNames[i])}\0";
+                    byte[] utf8 = Encoding.UTF8.GetBytes(filePath);
+
+                    IntPtr unmanagedStr = Marshal.AllocHGlobal(utf8.Length);
+                    Marshal.Copy(utf8, 0, unmanagedStr, utf8.Length);
+                    pathPtrs[i] = unmanagedStr;
+                }
+
+                // Call the native Swift function directly with IntPtr[]
+                return IOSNativeCalls.ushare_interface_share_files(
+                    timestamp,
+                    pathPtrs,
+                    count,
+                    additionalData.AdditionalText,
+                    additionalData.Title,
+                    ShareFileCallback
+                );
+            }
+            finally
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    IntPtr ptr = pathPtrs[i];
+                    if (ptr != IntPtr.Zero)
+                        Marshal.FreeHGlobal(ptr);
+                }
+            }
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(ShareFiles)} for the current platform.");
 #endif
