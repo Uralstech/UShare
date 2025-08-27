@@ -32,9 +32,10 @@ namespace Uralstech.UShare.Editor
                 label = "UShare Settings",
                 guiHandler = _ =>
                 {
-                    EditorGUILayout.LabelField("Android Settings");
-
                     EditorGUI.BeginChangeCheck();
+
+                    #region Android
+                    EditorGUILayout.LabelField("Android Settings");
                     settings.UseDefaultSettingsAndroid = EditorGUILayout.Toggle(new GUIContent("Use default settings", "Use default UShare settings for Android?"), settings.UseDefaultSettingsAndroid);
 
                     EditorGUI.BeginDisabledGroup(settings.UseDefaultSettingsAndroid);
@@ -44,6 +45,21 @@ namespace Uralstech.UShare.Editor
 
                     settings.CustomFileProviderPathsAndroid = EditorGUILayout.TextArea(settings.CustomFileProviderPathsAndroid);
                     EditorGUI.EndDisabledGroup();
+                    #endregion
+
+                    #region iOS
+                    EditorGUILayout.LabelField("iOS Settings");
+                    settings.PatchInfoPlistIOS = EditorGUILayout.Toggle(new GUIContent("Patch Info.plist for iOS", "Patch the exported XCode project's Info.plist file with additional permissions."), settings.PatchInfoPlistIOS);
+
+                    EditorGUI.BeginDisabledGroup(!settings.PatchInfoPlistIOS);
+
+                    settings.PhotoLibraryAdditionsUsageDescriptionIOS = EditorGUILayout.DelayedTextField(
+                        new GUIContent("Photos Addition Usage", "A message that tells people why the app is requesting add-only access to their photo library. Grants permission for the share sheet to save to the user's gallery. Ignored if empty."),
+                        settings.PhotoLibraryAdditionsUsageDescriptionIOS
+                    );
+
+                    EditorGUI.EndDisabledGroup();
+                    #endregion
 
                     if (EditorGUI.EndChangeCheck())
                         UShareBuildSettings.Save(settings);
