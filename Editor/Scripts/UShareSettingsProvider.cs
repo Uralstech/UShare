@@ -53,7 +53,7 @@ namespace Uralstech.UShare.Editor
 
                     EditorGUI.BeginDisabledGroup(!settings.PatchInfoPlistIOS);
 
-                    settings.PhotoLibraryAdditionsUsageDescriptionIOS = EditorGUILayout.DelayedTextField(
+                    settings.PhotoLibraryAdditionsUsageDescriptionIOS = EditorGUILayout.TextField(
                         new GUIContent("Photos Addition Usage", "A message that tells people why the app is requesting add-only access to their photo library. Grants permission for the share sheet to save to the user's gallery. Ignored if empty."),
                         settings.PhotoLibraryAdditionsUsageDescriptionIOS
                     );
