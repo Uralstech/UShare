@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if UNITY_ANDROID
+
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
@@ -38,9 +40,6 @@ namespace Uralstech.UShare.Editor
         /// <inheritdoc/>
         public void OnPreprocessBuild(BuildReport report)
         {
-            if (report.summary.platform != BuildTarget.Android)
-                return;
-
             Debug.Log("Patching UShare dependencies, copying patch module's AndroidManifest.xml.");
             
             string? packagePath = PathUtils.GetPackagePath();
@@ -80,3 +79,5 @@ namespace Uralstech.UShare.Editor
         }
     }
 }
+
+#endif

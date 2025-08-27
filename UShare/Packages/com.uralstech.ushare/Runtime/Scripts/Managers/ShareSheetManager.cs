@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using AOT;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Android;
 using Uralstech.Utils.Loggers;
@@ -62,20 +65,20 @@ namespace Uralstech.UShare
 
 #if UNITY_ANDROID
         /// <summary>
-        /// Utility object for Android which provides paths to where shareable data can be saved.
+        /// (Android) Utility object for Android which provides paths to where shareable data can be saved.
         /// </summary>
         public AndroidPathHelper AndroidPathHelper { get; protected set; }
 
         /// <summary>
-        /// The native plugin instance.
+        /// (Android) The native plugin instance.
         /// </summary>
         protected AndroidJavaObject? _pluginInstance;
+#endif
 
         /// <summary>
         /// List of files scheduled for deletion after a share action has been completed.
         /// </summary>
-        protected readonly List<string> _filesScheduledForDeletion = new();
-#endif
+        protected readonly List<(long, string)> _filesScheduledForDeletion = new();
 
         /// <inheritdoc/>
         protected void Awake()
@@ -100,26 +103,7 @@ namespace Uralstech.UShare
         protected void OnApplicationFocus(bool focus)
         {
             if (focus && _filesScheduledForDeletion.Count > 0)
-            {
-                s_logger.Log("Focus regained, erasing shared files from app storage.");
-                foreach (string file in _filesScheduledForDeletion)
-                {
-                    try
-                    {
-                        if (File.Exists(file))
-                        {
-                            File.Delete(file);
-                            s_logger.Log("Deleted file: {0}", file);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogException(ex);
-                    }
-                }
-
-                _filesScheduledForDeletion.Clear();
-            }
+                DeleteScheduledFiles(0, true);
         }
 
         /// <inheritdoc/>
@@ -133,12 +117,46 @@ namespace Uralstech.UShare
 #endif
 
         /// <summary>
+        /// Deletes files from <see cref="_filesScheduledForDeletion"/> that match the given timestamp,
+        /// unless overriden using <paramref name="deleteAll"/>.
+        /// </summary>
+        /// <param name="timestamp">The timestamp to match for in <see cref="_filesScheduledForDeletion"/>.</param>
+        /// <param name="deleteAll">Set this to true to override the timestamp check.</param>
+        protected void DeleteScheduledFiles(long timestamp, bool deleteAll = false)
+        {
+            s_logger.Log("Erasing shared files from app storage.");
+            for (int i = _filesScheduledForDeletion.Count - 1; i >= 0; i--)
+            {
+                (long fileTimestamp, string file) = _filesScheduledForDeletion[i];
+                if (fileTimestamp != timestamp && !deleteAll)
+                    continue;
+
+                try
+                {
+                    if (File.Exists(file))
+                    {
+                        File.Delete(file);
+                        s_logger.Log("Deleted file: {0}", file);
+                    }
+
+                    _filesScheduledForDeletion.RemoveAt(i);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the default shareable directory as defined in the native plugin.
         /// </summary>
         public string GetDefaultBasePath()
         {
 #if UNITY_ANDROID
             return Path.Join(AndroidPathHelper.CacheDirectory, DefaultSaveSubDirectory);
+#elif UNITY_IOS
+            return Path.Join(Application.temporaryCachePath, DefaultSaveSubDirectory);
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(GetDefaultBasePath)} for the current platform.");
 #endif
@@ -149,11 +167,16 @@ namespace Uralstech.UShare
         /// </summary>
         /// <param name="text">The text to share.</param>
         /// <param name="title">Optional title for the share sheet (Android 10+).</param>
-        public void ShareText(string text, string? title = null)
+        /// <returns>If the share request was executed successfully.</returns>
+        public bool ShareText(string text, string? title = null)
         {
 #if UNITY_ANDROID
             s_logger.Log("Sharing text using Android plugin.");
             _pluginInstance!.Call("shareText", text, title);
+            return true;
+#elif UNITY_IOS
+            s_logger.Log("Sharing text using iOS plugin.");
+            return IOSNativeCalls.ushare_interface_share_text(text, title);
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(ShareText)} for the current platform.");
 #endif
@@ -163,6 +186,8 @@ namespace Uralstech.UShare
         /// Shares data as a file URI to other apps using the system share sheet.
         /// </summary>
         /// <remarks>
+        /// On iOS, for images, the data is marshalled directly into the native code without any IO operations.
+        /// 
         /// This method writes the data to a file in a folder that is accessible by other apps, and then shares its location as a URI.
         /// By default, this location is in the app's cache directory under a subdirectory named "ShareCache". When the user regains
         /// focus on the app after sharing, the file will be deleted to prevent the cache directory from growing too large. These
@@ -175,10 +200,17 @@ namespace Uralstech.UShare
         /// <returns>True if successful, false otherwise.</returns>
         public bool ShareData(string contentType, string fileName, byte[] data, AdditionalShareData additionalData = default)
         {
-#if UNITY_ANDROID
+#if UNITY_IOS
+            if (contentType.StartsWith("image/"))
+                ShareImageImpl(data, additionalData);
+#endif
+
+#if UNITY_ANDROID || UNITY_IOS
+            long timestamp = DateTime.UtcNow.Ticks;
+
             try
             {
-                s_logger.Log("Writing data for singular file to shareable directory.");
+                s_logger.Log("Writing data for singular file to shareable/cache directory.");
                 string basePath = additionalData.BasePath ?? GetDefaultBasePath();
                 if (!Directory.Exists(basePath))
                     Directory.CreateDirectory(basePath);
@@ -188,7 +220,7 @@ namespace Uralstech.UShare
 
                 s_logger.Log("Data written to {0}.", path);
                 if (!additionalData.KeepDataAfterFocusRegain)
-                    _filesScheduledForDeletion.Add(path);
+                    _filesScheduledForDeletion.Add((timestamp, path));
             }
             catch (IOException ex)
             {
@@ -196,7 +228,7 @@ namespace Uralstech.UShare
                 return false;
             }
 
-            return ShareFile(contentType, fileName, additionalData);
+            return ShareFileImpl(timestamp, contentType, fileName, additionalData);
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(ShareData)} for the current platform.");
 #endif
@@ -206,6 +238,8 @@ namespace Uralstech.UShare
         /// Shares data as multiple file URIs to other apps using the system share sheet.
         /// </summary>
         /// <remarks>
+        /// On iOS, for image-only requests, the data is marshalled directly into the native code without any IO operations.
+        /// 
         /// This method writes the data to files in a folder that is accessible by other apps, and then shares its location as a URI.
         /// By default, this location is in the app's cache directory under a subdirectory named "ShareCache". When the user regains
         /// focus on the app after sharing, the file will be deleted to prevent the cache directory from growing too large. These
@@ -217,8 +251,14 @@ namespace Uralstech.UShare
         /// <returns>True if successful, false otherwise.</returns>
         public bool ShareData(string contentType, (string FileName, byte[] Data)[] files, AdditionalShareData additionalData = default)
         {
-#if UNITY_ANDROID
+#if UNITY_IOS
+            if (contentType.StartsWith("image/"))
+                return ShareImagesImpl(files, additionalData);
+#endif
+
+#if UNITY_ANDROID || UNITY_IOS
             string[] fileNames = new string[files.Length];
+            long timestamp = DateTime.UtcNow.Ticks;
 
             try
             {
@@ -235,7 +275,7 @@ namespace Uralstech.UShare
 
                     s_logger.Log("Data written to {0}.", path);
                     if (!additionalData.KeepDataAfterFocusRegain)
-                        _filesScheduledForDeletion.Add(path);
+                        _filesScheduledForDeletion.Add((timestamp, path));
 
                     fileNames[i] = fileName;
                 }
@@ -246,7 +286,7 @@ namespace Uralstech.UShare
                 return false;
             }
 
-            return ShareFiles(contentType, fileNames, additionalData);
+            return ShareFilesImpl(timestamp, contentType, fileNames, additionalData);
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(ShareData)} for the current platform.");
 #endif
@@ -265,6 +305,13 @@ namespace Uralstech.UShare
         /// <returns>True if successful, false otherwise.</returns>
         public bool ShareFile(string contentType, string fileName, AdditionalShareData additionalData = default)
         {
+            return ShareFileImpl(0, contentType, fileName, additionalData);
+        }
+
+        /// <inheritdoc cref="ShareFile"/>
+        /// <param name="timestamp">Timestamp to be passed into the native iOS plugin.</param>
+        protected bool ShareFileImpl(long timestamp, string contentType, string fileName, AdditionalShareData additionalData)
+        {
 #if UNITY_ANDROID
             s_logger.Log("Sharing file using Android plugin.");
             return _pluginInstance!.Call<bool>("shareFile",
@@ -274,6 +321,13 @@ namespace Uralstech.UShare
                 additionalData.BasePath,
                 additionalData.AdditionalText,
                 additionalData.Title);
+#elif UNITY_IOS
+            s_logger.Log("Sharing file using iOS plugin.");
+
+            string dirPath = additionalData.BasePath ?? GetDefaultBasePath();
+            string filePath = Path.Join(dirPath, fileName);
+
+            return IOSNativeCalls.ushare_interface_share_file(timestamp, filePath, additionalData.AdditionalText, additionalData.Title, ShareFileCallback);
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(ShareFile)} for the current platform.");
 #endif
@@ -296,6 +350,13 @@ namespace Uralstech.UShare
         /// <returns>True if successful, false otherwise.</returns>
         public bool ShareFiles(string contentType, string[] fileNames, AdditionalShareData additionalData = default)
         {
+            return ShareFilesImpl(0, contentType, fileNames, additionalData);
+        }
+
+        /// <inheritdoc cref="ShareFiles"/>
+        /// <param name="timestamp">Timestamp to be passed into the native iOS plugin.</param>
+        protected bool ShareFilesImpl(long timestamp, string contentType, string[] fileNames, AdditionalShareData additionalData)
+        {
 #if UNITY_ANDROID
             s_logger.Log("Sharing files using Android plugin.");
             return _pluginInstance!.Call<bool>("shareFiles",
@@ -305,6 +366,44 @@ namespace Uralstech.UShare
                 additionalData.BasePath,
                 additionalData.AdditionalText,
                 additionalData.Title);
+#elif UNITY_IOS
+            s_logger.Log("Sharing files using iOS plugin.");
+
+            int count = fileNames.Length;
+            IntPtr[] pathPtrs = new IntPtr[count];
+            string dirPath = additionalData.BasePath ?? GetDefaultBasePath();
+
+            try
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    string filePath = $"{Path.Join(dirPath, fileNames[i])}\0";
+                    byte[] utf8 = Encoding.UTF8.GetBytes(filePath);
+
+                    IntPtr unmanagedStr = Marshal.AllocHGlobal(utf8.Length);
+                    Marshal.Copy(utf8, 0, unmanagedStr, utf8.Length);
+                    pathPtrs[i] = unmanagedStr;
+                }
+
+                // Call the native Swift function directly with IntPtr[]
+                return IOSNativeCalls.ushare_interface_share_files(
+                    timestamp,
+                    pathPtrs,
+                    count,
+                    additionalData.AdditionalText,
+                    additionalData.Title,
+                    ShareFileCallback
+                );
+            }
+            finally
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    IntPtr ptr = pathPtrs[i];
+                    if (ptr != IntPtr.Zero)
+                        Marshal.FreeHGlobal(ptr);
+                }
+            }
 #else
             throw new NotSupportedException($"{nameof(ShareSheetManager)} does not have an implementation for {nameof(ShareFiles)} for the current platform.");
 #endif
@@ -338,6 +437,84 @@ namespace Uralstech.UShare
                 fileName,
                 fileProviderAuthority ?? AndroidFileProviderAuthority,
                 basePath);
+        }
+#endif
+
+#if UNITY_IOS
+        /// <summary>
+        /// Default implementation of <see cref="IOSNativeCalls.ShareFileCallback"/>.
+        /// </summary>
+        /// <param name="timestamp">The timestamp of the original request.</param>
+        [MonoPInvokeCallback(typeof(IOSNativeCalls.ShareFileCallback))]
+        protected static async void ShareFileCallback(long timestamp)
+        {
+            s_logger.Log("File share complete, got callback.");
+
+            await Awaitable.MainThreadAsync();
+            Instance.DeleteScheduledFiles(timestamp);
+        }
+
+        /// <summary>
+        /// (iOS) Shares an image to other apps using the system share sheet.
+        /// </summary>
+        /// <param name="data">The image to share.</param>
+        /// <param name="additionalData">Additional data for the event.</param>
+        /// <returns>True if successful, false otherwise.</returns>
+        protected bool ShareImageImpl(byte[] data, AdditionalShareData additionalData)
+        {
+            s_logger.Log("Sharing image using iOS plugin.");
+
+            unsafe
+            {
+                fixed (byte* dataPtr = data)
+                {
+                    return IOSNativeCalls.ushare_interface_share_image(new IntPtr(dataPtr), data.Length, additionalData.AdditionalText, additionalData.Title);
+                }
+            }
+        }
+
+        /// <summary>
+        /// (iOS) Shares images to other apps using the system share sheet.
+        /// </summary>
+        /// <param name="files">An array of tuples containing file names (ignored) and their corresponding data to share.</param>
+        /// <param name="additionalData">Additional data for the event.</param>
+        /// <returns>True if successful, false otherwise.</returns>
+        protected bool ShareImagesImpl((string, byte[] Data)[] files, AdditionalShareData additionalData)
+        {
+            s_logger.Log("Sharing images using iOS plugin.");
+
+            int count = files.Length;
+            GCHandle[] gcHandles = new GCHandle[count];
+            IntPtr[] imagePtrs = new IntPtr[count];
+            int[] sizes = new int[count];
+
+            try
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    byte[] data = files[i].Data;
+
+                    GCHandle handle = gcHandles[i] = GCHandle.Alloc(data, GCHandleType.Pinned);
+                    imagePtrs[i] = handle.AddrOfPinnedObject();
+                    sizes[i] = data.Length;
+                }
+
+                return IOSNativeCalls.ushare_interface_share_images(imagePtrs, sizes, count, additionalData.AdditionalText, additionalData.Title);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                return false;
+            }
+            finally
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    GCHandle gcHandle = gcHandles[i];
+                    if (gcHandle.IsAllocated)
+                        gcHandle.Free();
+                }
+            }
         }
 #endif
     }
