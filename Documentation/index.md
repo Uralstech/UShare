@@ -11,7 +11,7 @@ Share sheet support for mobile platforms.
 
 ## Installation
 
-This package was made for Unity 6.0 and above. Built and tested in Unity 6.1.
+This package was made for Unity 6.0 and above. Built and tested in Unity 6.2.
 
 # [OpenUPM](#tab/openupm)
 

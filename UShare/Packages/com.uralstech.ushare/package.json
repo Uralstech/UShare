@@ -3,7 +3,7 @@
   "displayName": "UShare",
   "description": "Share sheet support for mobile platforms.",
   "keywords": [],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "hideInEditor": false,
   "author": {
     "name": "Udayshankar Ravikumar",
@@ -22,7 +22,7 @@
     "com.unity.modules.jsonserialize": "1.0.0",
     "com.unity.modules.imgui": "1.0.0",
     "com.uralstech.utils.singleton": "1.2.1",
-    "com.uralstech.utils.loggers": "1.0.0"
+    "com.uralstech.utils.loggers": "1.1.0"
   },
   "unity": "6000.0"
 }
