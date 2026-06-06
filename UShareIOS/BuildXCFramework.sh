@@ -5,6 +5,9 @@ OUTPUT="build"
 XCFRAMEWORK_NAME="UShare.xcframework"
 FRAMEWORK_NAME="UShare.framework"
 
+rm -rf "$OUTPUT"
+mkdir -p "$OUTPUT"
+
 xcodebuild archive \
   -scheme "$SCHEME" \
   -configuration Release \

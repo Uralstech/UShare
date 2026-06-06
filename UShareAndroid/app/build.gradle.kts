@@ -2,17 +2,21 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+}
+
+val moduleNamespace = "com.uralstech.ushare"
+
+base {
+    archivesName.set(moduleNamespace)
 }
 
 android {
-    namespace = "com.uralstech.ushare"
-    compileSdk = 35
+    namespace = moduleNamespace
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 23
-
-        setProperty("archivesBaseName", "$namespace")
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -37,7 +41,5 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
 }
