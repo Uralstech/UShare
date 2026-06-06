@@ -15,7 +15,6 @@
 #if UNITY_ANDROID
 
 using System.IO;
-using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
@@ -28,10 +27,7 @@ namespace Uralstech.UShare.Editor
     /// </summary>
     public class AndroidConfigurator : IPreprocessBuildWithReport
     {
-        public const string DefaultAndroidManifestPath = "Editor/Android/DefaultAndroidManifest.xml";
         public const string DefaultFilePathsXmlPath = "Editor/Android/DefaultFileProviderPaths.xml";
-
-        public const string PatchManifestPath = "Runtime/Plugins/Android/com.uralstech.ushare.patch.androidlib/AndroidManifest.xml";
         public const string PatchFilePathsXmlPath = "Runtime/Plugins/Android/com.uralstech.ushare.patch.androidlib/res/xml/file_provider_paths.xml";
 
         /// <inheritdoc/>
@@ -40,24 +36,11 @@ namespace Uralstech.UShare.Editor
         /// <inheritdoc/>
         public void OnPreprocessBuild(BuildReport report)
         {
-            Debug.Log("Patching UShare dependencies, copying patch module's AndroidManifest.xml.");
+            Debug.Log("Configuring UShare FileProvider paths.");
             
             string? packagePath = PathUtils.GetPackagePath();
             if (string.IsNullOrEmpty(packagePath))
                 return;
-
-            string targetManifest = Path.Join(packagePath, PatchManifestPath);
-            if (!PathUtils.ValidateFilePath(targetManifest))
-                return;
-
-            string defaultManifest = Path.Join(packagePath, DefaultAndroidManifestPath);
-            if (!PathUtils.ValidateFilePath(defaultManifest))
-                return;
-
-            string appIdentifier = PlayerSettings.GetApplicationIdentifier(NamedBuildTarget.Android);
-            File.WriteAllText(targetManifest, string.Format(File.ReadAllText(defaultManifest), appIdentifier));
-
-            Debug.Log("Updated patch module's AndroidManifest.xml, copying patch module's FileProviders paths config.");
 
             string targetFilePathsXml = Path.Join(packagePath, PatchFilePathsXmlPath);
             if (!PathUtils.ValidateFilePath(targetFilePathsXml))
