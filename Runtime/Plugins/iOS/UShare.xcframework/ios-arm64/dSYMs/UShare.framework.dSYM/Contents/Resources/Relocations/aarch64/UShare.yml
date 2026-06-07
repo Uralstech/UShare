@@ -2,8 +2,8 @@
 triple:          'arm64-apple-darwin'
 binary-path:     '/Users/celeste/Library/Developer/Xcode/DerivedData/UShare-atsxjbvqkprvvrexxsdopnjmfxat/Build/Intermediates.noindex/ArchiveIntermediates/UShare/InstallationBuildProductsLocation/Library/Frameworks/UShare.framework/UShare'
 relocations:
-  - { offset: 0x5164D, size: 0x8, addend: 0x0, symName: _UShareVersionString, symObjAddr: 0x0, symBinAddr: 0x8810, symSize: 0x0 }
-  - { offset: 0x51684, size: 0x8, addend: 0x0, symName: _UShareVersionNumber, symObjAddr: 0x28, symBinAddr: 0x8838, symSize: 0x0 }
+  - { offset: 0x5164D, size: 0x8, addend: 0x0, symName: _UShareVersionString, symObjAddr: 0x0, symBinAddr: 0x8F50, symSize: 0x0 }
+  - { offset: 0x51684, size: 0x8, addend: 0x0, symName: _UShareVersionNumber, symObjAddr: 0x28, symBinAddr: 0x8F78, symSize: 0x0 }
   - { offset: 0x516C2, size: 0x8, addend: 0x0, symName: '_$s6UShare14ShareableImageC37activityViewControllerPlaceholderItemyypSo010UIActivityeF0CFTo', symObjAddr: 0x0, symBinAddr: 0x4000, symSize: 0x10 }
   - { offset: 0x517F7, size: 0x8, addend: 0x0, symName: '_$s6UShare14ShareableImageCfETo', symObjAddr: 0xD8, symBinAddr: 0x40D8, symSize: 0x50 }
   - { offset: 0x51826, size: 0x8, addend: 0x0, symName: '_$s6UShare14ShareableImageCMa', symObjAddr: 0x128, symBinAddr: 0x4128, symSize: 0x20 }
@@ -37,33 +37,36 @@ relocations:
   - { offset: 0x52676, size: 0x8, addend: 0x0, symName: _ushare_ios_share_text, symObjAddr: 0x0, symBinAddr: 0x4834, symSize: 0x18 }
   - { offset: 0x5276F, size: 0x8, addend: 0x0, symName: '_$s6UShare9shareText2id7textPtr05titleF018onActivityFinishedSbs5Int32V_SPys5UInt8VGSgALyAHXCtF', symObjAddr: 0x18, symBinAddr: 0x484C, symSize: 0x26C }
   - { offset: 0x52A46, size: 0x8, addend: 0x0, symName: '_$s6UShare9shareData33_1CB3E48CE689C166F2B0D30662622D5CLL2id4data8callbackSbs5Int32V_SayypGyAHctF', symObjAddr: 0x284, symBinAddr: 0x4AB8, symSize: 0x530 }
-  - { offset: 0x52C5B, size: 0x8, addend: 0x0, symName: '_$s6UShare9shareData33_1CB3E48CE689C166F2B0D30662622D5CLL2id4data8callbackSbs5Int32V_SayypGyAHctFySo14UIActivityTypeaSg_SbAISgs5Error_pSgtcfU_', symObjAddr: 0x11A8, symBinAddr: 0x59DC, symSize: 0x2C0 }
-  - { offset: 0x52F8E, size: 0x8, addend: 0x0, symName: _ushare_ios_share_files, symObjAddr: 0x7B4, symBinAddr: 0x4FE8, symSize: 0x18 }
-  - { offset: 0x5315E, size: 0x8, addend: 0x0, symName: '_$s6UShare10shareFiles2id8pathsPtr5count04textF005titleF018onActivityFinishedSbs5Int32V_SPySPys5UInt8VGSgGSgAj2NyAJXCtF', symObjAddr: 0x7CC, symBinAddr: 0x5000, symSize: 0x9DC }
-  - { offset: 0x53B31, size: 0x8, addend: 0x0, symName: '_$sSo14UIActivityTypeaSgSbSayypGSgs5Error_pSgIeggygg_ACSbSo7NSArrayCSgSo7NSErrorCSgIeyByyyy_TR', symObjAddr: 0x1468, symBinAddr: 0x5C9C, symSize: 0xB4 }
-  - { offset: 0x53B49, size: 0x8, addend: 0x0, symName: ___swift_project_value_buffer, symObjAddr: 0x151C, symBinAddr: 0x5D50, symSize: 0x18 }
-  - { offset: 0x53B5D, size: 0x8, addend: 0x0, symName: ___swift_instantiateConcreteTypeFromMangledNameV2, symObjAddr: 0x1578, symBinAddr: 0x5D68, symSize: 0x50 }
-  - { offset: 0x53B7C, size: 0x8, addend: 0x0, symName: '_$ss5Int32VIetCy_ABIegy_TRTA', symObjAddr: 0x15D8, symBinAddr: 0x5DC8, symSize: 0x8 }
-  - { offset: 0x53BFD, size: 0x8, addend: 0x0, symName: '_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFyp_Tg5', symObjAddr: 0x15E0, symBinAddr: 0x5DD0, symSize: 0x10C }
-  - { offset: 0x53CFF, size: 0x8, addend: 0x0, symName: '_$s2os32getNullTerminatedUTF8PointerImpl_21storingStringOwnersInSVSS_SpyypGSgztF', symObjAddr: 0x16EC, symBinAddr: 0x5EDC, symSize: 0xC8 }
-  - { offset: 0x53D22, size: 0x8, addend: 0x0, symName: '_$ss11_StringGutsV16_deconstructUTF87scratchyXlSg5owner_xSi6lengthSb11usesScratchSb15allocatedMemorytSwSg_ts8_PointerRzlFSV_Tgq5', symObjAddr: 0x17B4, symBinAddr: 0x5FA4, symSize: 0x110 }
-  - { offset: 0x53D79, size: 0x8, addend: 0x0, symName: '_$ss11_StringGutsV23_allocateForDeconstructyXl5owner_SVSi6lengthtyF', symObjAddr: 0x18C4, symBinAddr: 0x60B4, symSize: 0x64 }
-  - { offset: 0x53DC6, size: 0x8, addend: 0x0, symName: '_$ss32_copyCollectionToContiguousArrayys0dE0Vy7ElementQzGxSlRzlFSS8UTF8ViewV_Tgq5', symObjAddr: 0x1928, symBinAddr: 0x6118, symSize: 0x134 }
-  - { offset: 0x53E3A, size: 0x8, addend: 0x0, symName: '_$sSa6append10contentsOfyqd__n_t7ElementQyd__RszSTRd__lFs5UInt8V_SayAFGTgq5', symObjAddr: 0x1A5C, symBinAddr: 0x624C, symSize: 0xF0 }
-  - { offset: 0x53F0D, size: 0x8, addend: 0x0, symName: '_$ss22_ContiguousArrayBufferV19_uninitializedCount15minimumCapacityAByxGSi_SitcfCs5UInt8V_Tt1gq5', symObjAddr: 0x1B4C, symBinAddr: 0x633C, symSize: 0x70 }
-  - { offset: 0x53F62, size: 0x8, addend: 0x0, symName: '_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFs5UInt8V_Tgq5', symObjAddr: 0x1BBC, symBinAddr: 0x63AC, symSize: 0xF0 }
-  - { offset: 0x53FE9, size: 0x8, addend: 0x0, symName: ___swift_destroy_boxed_opaque_existential_0, symObjAddr: 0x1CAC, symBinAddr: 0x649C, symSize: 0x20 }
-  - { offset: 0x53FFD, size: 0x8, addend: 0x0, symName: ___swift_allocate_boxed_opaque_existential_0, symObjAddr: 0x1CCC, symBinAddr: 0x64BC, symSize: 0x3C }
-  - { offset: 0x54011, size: 0x8, addend: 0x0, symName: '_$sypWOb', symObjAddr: 0x1D08, symBinAddr: 0x64F8, symSize: 0x10 }
-  - { offset: 0x54025, size: 0x8, addend: 0x0, symName: '_$sSo7UIImageCMa', symObjAddr: 0x1D18, symBinAddr: 0x6508, symSize: 0x44 }
-  - { offset: 0x54039, size: 0x8, addend: 0x0, symName: '_$sypWOc', symObjAddr: 0x1D5C, symBinAddr: 0x654C, symSize: 0x3C }
-  - { offset: 0x5404D, size: 0x8, addend: 0x0, symName: '_$s6UShare9shareData33_1CB3E48CE689C166F2B0D30662622D5CLL2id4data8callbackSbs5Int32V_SayypGyAHctFySo14UIActivityTypeaSg_SbAISgs5Error_pSgtcfU_TA', symObjAddr: 0x1DBC, symBinAddr: 0x65AC, symSize: 0xC }
-  - { offset: 0x54061, size: 0x8, addend: 0x0, symName: _block_copy_helper, symObjAddr: 0x1DC8, symBinAddr: 0x65B8, symSize: 0x14 }
-  - { offset: 0x54075, size: 0x8, addend: 0x0, symName: _block_destroy_helper, symObjAddr: 0x1DDC, symBinAddr: 0x65CC, symSize: 0x8 }
-  - { offset: 0x548F1, size: 0x8, addend: 0x0, symName: '_$s6UShare26getUnityRootViewControllerSo06UIViewF0CSgyF', symObjAddr: 0x0, symBinAddr: 0x65DC, symSize: 0x490 }
-  - { offset: 0x54A19, size: 0x8, addend: 0x0, symName: '_$s6UShare6logger_WZ', symObjAddr: 0x490, symBinAddr: 0x6A6C, symSize: 0x48 }
-  - { offset: 0x54A53, size: 0x8, addend: 0x0, symName: '_$s6UShare6logger2os6LoggerVvpfiAEyXEfU_', symObjAddr: 0x4D8, symBinAddr: 0x6AB4, symSize: 0x1C8 }
-  - { offset: 0x54AA3, size: 0x8, addend: 0x0, symName: '_$s6UShare17getUnityBaseClassSo8NSObjectCmSgyF', symObjAddr: 0x6A0, symBinAddr: 0x6C7C, symSize: 0x38C }
-  - { offset: 0x54BC5, size: 0x8, addend: 0x0, symName: ___swift_allocate_value_buffer, symObjAddr: 0xAD4, symBinAddr: 0x7048, symSize: 0x40 }
-  - { offset: 0x54BD9, size: 0x8, addend: 0x0, symName: '_$s2os6LoggerVSgWOb', symObjAddr: 0xB14, symBinAddr: 0x7088, symSize: 0x50 }
+  - { offset: 0x52C5B, size: 0x8, addend: 0x0, symName: '_$s6UShare9shareData33_1CB3E48CE689C166F2B0D30662622D5CLL2id4data8callbackSbs5Int32V_SayypGyAHctFySo14UIActivityTypeaSg_SbAISgs5Error_pSgtcfU_', symObjAddr: 0x187C, symBinAddr: 0x60B0, symSize: 0x2C0 }
+  - { offset: 0x52F8E, size: 0x8, addend: 0x0, symName: _ushare_ios_share_images, symObjAddr: 0x7B4, symBinAddr: 0x4FE8, symSize: 0x18 }
+  - { offset: 0x530C7, size: 0x8, addend: 0x0, symName: '_$s6UShare11shareImages2id9imagesPtr5sizes5count04textF005titleF018onActivityFinishedSbs5Int32V_SPySVSgGSgSPyAKGSgAKSPys5UInt8VGSgATyAKXCtF', symObjAddr: 0x7CC, symBinAddr: 0x5000, symSize: 0x820 }
+  - { offset: 0x53854, size: 0x8, addend: 0x0, symName: _ushare_ios_share_files, symObjAddr: 0xFEC, symBinAddr: 0x5820, symSize: 0x18 }
+  - { offset: 0x53954, size: 0x8, addend: 0x0, symName: '_$s6UShare10shareFiles2id8pathsPtr5count04textF005titleF018onActivityFinishedSbs5Int32V_SPySPys5UInt8VGSgGSgAj2NyAJXCtF', symObjAddr: 0x1004, symBinAddr: 0x5838, symSize: 0x878 }
+  - { offset: 0x5413A, size: 0x8, addend: 0x0, symName: '_$sSo14UIActivityTypeaSgSbSayypGSgs5Error_pSgIeggygg_ACSbSo7NSArrayCSgSo7NSErrorCSgIeyByyyy_TR', symObjAddr: 0x1B3C, symBinAddr: 0x6370, symSize: 0xB4 }
+  - { offset: 0x54152, size: 0x8, addend: 0x0, symName: ___swift_project_value_buffer, symObjAddr: 0x1BF0, symBinAddr: 0x6424, symSize: 0x18 }
+  - { offset: 0x54166, size: 0x8, addend: 0x0, symName: ___swift_instantiateConcreteTypeFromMangledNameV2, symObjAddr: 0x1C4C, symBinAddr: 0x643C, symSize: 0x50 }
+  - { offset: 0x54185, size: 0x8, addend: 0x0, symName: '_$ss5Int32VIetCy_ABIegy_TRTA', symObjAddr: 0x1CAC, symBinAddr: 0x649C, symSize: 0x8 }
+  - { offset: 0x541AE, size: 0x8, addend: 0x0, symName: '_$s10Foundation4DataV15_RepresentationOWOe', symObjAddr: 0x1CB4, symBinAddr: 0x64A4, symSize: 0x40 }
+  - { offset: 0x541C2, size: 0x8, addend: 0x0, symName: '_$sSo7UIImageCMa', symObjAddr: 0x1CF4, symBinAddr: 0x64E4, symSize: 0x44 }
+  - { offset: 0x5422E, size: 0x8, addend: 0x0, symName: '_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFyp_Tg5', symObjAddr: 0x1D38, symBinAddr: 0x6528, symSize: 0x10C }
+  - { offset: 0x54330, size: 0x8, addend: 0x0, symName: '_$sypWOb', symObjAddr: 0x1E44, symBinAddr: 0x6634, symSize: 0x10 }
+  - { offset: 0x54344, size: 0x8, addend: 0x0, symName: '_$s2os32getNullTerminatedUTF8PointerImpl_21storingStringOwnersInSVSS_SpyypGSgztF', symObjAddr: 0x1E54, symBinAddr: 0x6644, symSize: 0xC8 }
+  - { offset: 0x54367, size: 0x8, addend: 0x0, symName: '_$ss11_StringGutsV16_deconstructUTF87scratchyXlSg5owner_xSi6lengthSb11usesScratchSb15allocatedMemorytSwSg_ts8_PointerRzlFSV_Tgq5', symObjAddr: 0x1F1C, symBinAddr: 0x670C, symSize: 0x110 }
+  - { offset: 0x543BE, size: 0x8, addend: 0x0, symName: '_$ss11_StringGutsV23_allocateForDeconstructyXl5owner_SVSi6lengthtyF', symObjAddr: 0x202C, symBinAddr: 0x681C, symSize: 0x64 }
+  - { offset: 0x5440B, size: 0x8, addend: 0x0, symName: '_$ss32_copyCollectionToContiguousArrayys0dE0Vy7ElementQzGxSlRzlFSS8UTF8ViewV_Tgq5', symObjAddr: 0x2090, symBinAddr: 0x6880, symSize: 0x134 }
+  - { offset: 0x5447F, size: 0x8, addend: 0x0, symName: '_$sSa6append10contentsOfyqd__n_t7ElementQyd__RszSTRd__lFs5UInt8V_SayAFGTgq5', symObjAddr: 0x21C4, symBinAddr: 0x69B4, symSize: 0xF0 }
+  - { offset: 0x54552, size: 0x8, addend: 0x0, symName: '_$ss22_ContiguousArrayBufferV19_uninitializedCount15minimumCapacityAByxGSi_SitcfCs5UInt8V_Tt1gq5', symObjAddr: 0x22B4, symBinAddr: 0x6AA4, symSize: 0x70 }
+  - { offset: 0x545A7, size: 0x8, addend: 0x0, symName: '_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFs5UInt8V_Tgq5', symObjAddr: 0x2324, symBinAddr: 0x6B14, symSize: 0xF0 }
+  - { offset: 0x5462E, size: 0x8, addend: 0x0, symName: ___swift_destroy_boxed_opaque_existential_0, symObjAddr: 0x2414, symBinAddr: 0x6C04, symSize: 0x20 }
+  - { offset: 0x54642, size: 0x8, addend: 0x0, symName: ___swift_allocate_boxed_opaque_existential_0, symObjAddr: 0x2434, symBinAddr: 0x6C24, symSize: 0x3C }
+  - { offset: 0x54656, size: 0x8, addend: 0x0, symName: '_$sypWOc', symObjAddr: 0x2470, symBinAddr: 0x6C60, symSize: 0x3C }
+  - { offset: 0x5466A, size: 0x8, addend: 0x0, symName: '_$s6UShare9shareData33_1CB3E48CE689C166F2B0D30662622D5CLL2id4data8callbackSbs5Int32V_SayypGyAHctFySo14UIActivityTypeaSg_SbAISgs5Error_pSgtcfU_TA', symObjAddr: 0x24D0, symBinAddr: 0x6CC0, symSize: 0xC }
+  - { offset: 0x5467E, size: 0x8, addend: 0x0, symName: _block_copy_helper, symObjAddr: 0x24DC, symBinAddr: 0x6CCC, symSize: 0x14 }
+  - { offset: 0x54692, size: 0x8, addend: 0x0, symName: _block_destroy_helper, symObjAddr: 0x24F0, symBinAddr: 0x6CE0, symSize: 0x8 }
+  - { offset: 0x55008, size: 0x8, addend: 0x0, symName: '_$s6UShare26getUnityRootViewControllerSo06UIViewF0CSgyF', symObjAddr: 0x0, symBinAddr: 0x6CF4, symSize: 0x490 }
+  - { offset: 0x55130, size: 0x8, addend: 0x0, symName: '_$s6UShare6logger_WZ', symObjAddr: 0x490, symBinAddr: 0x7184, symSize: 0x48 }
+  - { offset: 0x5516A, size: 0x8, addend: 0x0, symName: '_$s6UShare6logger2os6LoggerVvpfiAEyXEfU_', symObjAddr: 0x4D8, symBinAddr: 0x71CC, symSize: 0x1C8 }
+  - { offset: 0x551BA, size: 0x8, addend: 0x0, symName: '_$s6UShare17getUnityBaseClassSo8NSObjectCmSgyF', symObjAddr: 0x6A0, symBinAddr: 0x7394, symSize: 0x38C }
+  - { offset: 0x552DC, size: 0x8, addend: 0x0, symName: ___swift_allocate_value_buffer, symObjAddr: 0xAD4, symBinAddr: 0x7760, symSize: 0x40 }
+  - { offset: 0x552F0, size: 0x8, addend: 0x0, symName: '_$s2os6LoggerVSgWOb', symObjAddr: 0xB14, symBinAddr: 0x77A0, symSize: 0x50 }
 ...

@@ -14,6 +14,7 @@
 
 #if UNITY_IOS
 
+using System;
 using System.Runtime.InteropServices;
 
 #nullable enable
@@ -33,6 +34,21 @@ namespace Uralstech.UShare
         public static extern bool ushare_ios_share_text(int id, [MarshalAs(UnmanagedType.LPUTF8Str)] string text,
             [MarshalAs(UnmanagedType.LPUTF8Str)] string? title, ActivityFinishedCallback callback);
 
+        /// <summary>Shares images using UIActivityViewController.</summary>
+        /// <param name="id">The ID of this event, to be returned in <paramref name="callback"/>.</param>
+        /// <param name="images">The images being shared.</param>
+        /// <param name="sizes">The size of each image in <paramref name="images"/>, in bytes.</param>
+        /// <param name="count">Length of <paramref name="images"/> <b>and</b> <paramref name="sizes"/>.</param>
+        /// <param name="text">Optional additional text to share.</param>
+        /// <param name="title">Optional title for the sharesheet.</param>
+        /// <param name="callback">Callback for when the activity has finished.
+        /// Note that this is <b>not</b> an indication of the operation being completed.</param>
+        /// <returns><see langword="true"/> if the view was presented; <see langword="false"/> otherwise.</returns>
+        [DllImport("__Internal")]
+        public static extern bool ushare_ios_share_images(int id, IntPtr[] images, int[] sizes, int count,
+            [MarshalAs(UnmanagedType.LPUTF8Str)] string? text, [MarshalAs(UnmanagedType.LPUTF8Str)] string? title,
+            ActivityFinishedCallback callback);
+        
         /// <summary>Shares files using UIActivityViewController.</summary>
         /// <param name="id">The ID of this event, to be returned in <paramref name="callback"/>.</param>
         /// <param name="paths">The paths to the files being shared.</param>
