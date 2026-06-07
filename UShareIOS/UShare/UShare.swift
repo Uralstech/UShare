@@ -26,18 +26,32 @@ internal let logger: Logger = {
 internal func getUnityBaseClass() -> NSObject.Type? {
     let bundlePath = Bundle.main.bundlePath.appending("/Frameworks/UnityFramework.framework")
     guard let bundle = Bundle(path: bundlePath) else {
+        logger.error("Could not find Unity framework bundle!")
         return nil
     }
     
-    return (bundle.principalClass as! NSObject.Type)
+    guard let baseClass = bundle.principalClass as? NSObject.Type else {
+        logger.error("Could not get Unity framework base class!")
+        return nil
+    }
+    
+    return baseClass
 }
 
 internal func getUnityRootViewController() -> UIViewController? {
     guard let unityBaseClass = getUnityBaseClass() else {
+        logger.warning("Could not access Unity framework!")
         return nil
     }
     
-    let instance = unityBaseClass.value(forKey: "getInstance") as! NSObject
-    let appController = instance.value(forKey: "appController") as! NSObject
-    return (appController.value(forKey: "rootViewController") as! UIViewController)
+    guard
+        let instance = unityBaseClass.value(forKey: "getInstance") as? NSObject,
+        let appController = instance.value(forKey: "appController") as? NSObject,
+        let viewController = appController.value(forKey: "rootViewController") as? UIViewController
+    else {
+        logger.error("Could not get root view controller from Unity!")
+        return nil
+    }
+    
+    return viewController
 }

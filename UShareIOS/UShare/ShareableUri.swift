@@ -20,7 +20,7 @@ final class ShareableUri: NSObject, UIActivityItemSource {
     private let uri: URL
     private let title: String?
 
-    init(uri: URL, title: String?) {
+    init(_ uri: URL, _ title: String?) {
         self.uri = uri
         self.title = title
         super.init()

@@ -15,24 +15,16 @@
 #nullable enable
 namespace Uralstech.UShare
 {
-    /// <summary>
-    /// Additional data regarding a share event.
-    /// </summary>
+    /// <summary>Additional data for a share event.</summary>
     public struct AdditionalShareData
     {
-        /// <summary>
-        /// Override the path to the directory containing the file(s) to share.
-        /// </summary>
+        /// <summary>Overrides the path to the directory containing the file(s) to share.</summary>
         public string? BasePath;
 
-        /// <summary>
-        /// (Android) Override the FileProvider authority for the file(s) being shared.
-        /// </summary>
+        /// <summary>Override the Android FileProvider authority for the file(s) being shared.</summary>
         public string? AndroidFileProviderAuthority;
 
-        /// <summary>
-        /// Additional text to be shared along with the main content.
-        /// </summary>
+        /// <summary>Additional text to be shared along with the main content.</summary>
         /// <remarks>
         /// You can usually get away with having text in shared content along with other data
         /// <b>without</b> having to declare it in the MIME type you provide for the request.
@@ -42,22 +34,11 @@ namespace Uralstech.UShare
         /// </remarks>
         public string? AdditionalText;
 
-        /// <summary>
-        /// Optional title for the share sheet (Android 10+, but not guaranteed to work when sharing non-text media).
-        /// </summary>
-        public string? Title;
-
-        /// <summary>
-        /// Whether to keep the file(s) after the user regains focus on the app after sharing.
-        /// This only applies to share events where you provide the raw data to be shared,
-        /// like with <see cref="ShareSheetManager.ShareData(string, string, byte[], AdditionalShareData)"/>,
-        /// and not for cases where the data is already present in the app's storage.
-        /// </summary>
+        /// <summary>Optional title for the share sheet.</summary>
         /// <remarks>
-        /// By default, the data is deleted from the app's storage when the user
-        /// regains focus on the app after sharing to prevent the share directory
-        /// from getting too big.
+        /// For Android:<br/>
+        /// Requires Android 10+ and is not guaranteed to work when sharing non-text media
         /// </remarks>
-        public bool KeepDataAfterFocusRegain;
+        public string? Title;
     }
 }

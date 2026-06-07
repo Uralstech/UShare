@@ -45,26 +45,6 @@ class ShareHelper(private val context: Context) {
         }
     }
 
-    /** Util method to call [Context.getCacheDir]. */
-    fun getCacheDirPath(): String {
-        return context.cacheDir.absolutePath
-    }
-
-    /** Util method to call [Context.getExternalCacheDir]. */
-    fun getExternalCacheDirPath(): String? {
-        return context.externalCacheDir?.absolutePath
-    }
-
-    /** Util method to call [Context.getFilesDir]. */
-    fun getFilesDirPath(): String {
-        return context.filesDir.absolutePath
-    }
-
-    /** Util method to call [Context.getExternalFilesDir]. */
-    fun getExternalFilesDirPath(): String? {
-        return context.getExternalFilesDir(null)?.absolutePath
-    }
-
     /**
      * Shares text to other apps using Android's share sheet.
      * @param text The text to share.

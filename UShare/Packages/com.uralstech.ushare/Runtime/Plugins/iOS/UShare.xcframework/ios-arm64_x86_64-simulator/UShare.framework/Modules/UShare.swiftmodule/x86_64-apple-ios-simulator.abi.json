@@ -96,7 +96,7 @@
       {
         "kind": "Function",
         "name": "shareText",
-        "printedName": "shareText(textPtr:titlePtr:)",
+        "printedName": "shareText(id:textPtr:titlePtr:onActivityFinished:)",
         "children": [
           {
             "kind": "TypeNominal",
@@ -106,19 +106,25 @@
           },
           {
             "kind": "TypeNominal",
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
+          },
+          {
+            "kind": "TypeNominal",
             "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
+            "printedName": "Swift.UnsafePointer<Swift.UInt8>?",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
+                "printedName": "Swift.UnsafePointer<Swift.UInt8>",
                 "children": [
                   {
                     "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
+                    "name": "UInt8",
+                    "printedName": "Swift.UInt8",
+                    "usr": "s:s5UInt8V"
                   }
                 ],
                 "usr": "s:SP"
@@ -129,112 +135,18 @@
           {
             "kind": "TypeNominal",
             "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
+            "printedName": "Swift.UnsafePointer<Swift.UInt8>?",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
+                "printedName": "Swift.UnsafePointer<Swift.UInt8>",
                 "children": [
                   {
                     "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "usr": "s:Sq"
-          }
-        ],
-        "declKind": "Func",
-        "usr": "c:(cm)shareTextWithTextPtr:titlePtr:",
-        "mangledName": "$s6UShare9shareText7textPtr05titleE0SbSPys4Int8VGSg_AHtF",
-        "moduleName": "UShare",
-        "declAttributes": [
-          "AccessControl",
-          "CDecl"
-        ],
-        "funcSelfKind": "NonMutating"
-      },
-      {
-        "kind": "Function",
-        "name": "shareFile",
-        "printedName": "shareFile(timestamp:filePathPtr:textPtr:titlePtr:onDoneCallback:)",
-        "children": [
-          {
-            "kind": "TypeNominal",
-            "name": "Bool",
-            "printedName": "Swift.Bool",
-            "usr": "s:Sb"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Int64",
-            "printedName": "Swift.Int64",
-            "usr": "s:s5Int64V"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "usr": "s:Sq"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "usr": "s:Sq"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
+                    "name": "UInt8",
+                    "printedName": "Swift.UInt8",
+                    "usr": "s:s5UInt8V"
                   }
                 ],
                 "usr": "s:SP"
@@ -245,7 +157,7 @@
           {
             "kind": "TypeFunc",
             "name": "Function",
-            "printedName": "(Swift.Int64) -> ()",
+            "printedName": "(Swift.Int32) -> ()",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -254,16 +166,16 @@
               },
               {
                 "kind": "TypeNominal",
-                "name": "Int64",
-                "printedName": "Swift.Int64",
-                "usr": "s:s5Int64V"
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
               }
             ]
           }
         ],
         "declKind": "Func",
-        "usr": "c:(cm)shareFileWithTimestamp:filePathPtr:textPtr:titlePtr:onDoneCallback:",
-        "mangledName": "$s6UShare9shareFile9timestamp11filePathPtr04textG005titleG014onDoneCallbackSbs5Int64V_SPys4Int8VGSgA2MyAIXCtF",
+        "usr": "c:(cm)shareTextWithId:textPtr:titlePtr:onActivityFinished:",
+        "mangledName": "$s6UShare9shareText2id7textPtr05titleF018onActivityFinishedSbs5Int32V_SPys5UInt8VGSgALyAHXCtF",
         "moduleName": "UShare",
         "declAttributes": [
           "AccessControl",
@@ -274,7 +186,7 @@
       {
         "kind": "Function",
         "name": "shareFiles",
-        "printedName": "shareFiles(timestamp:filePathsPtr:count:textPtr:titlePtr:onDoneCallback:)",
+        "printedName": "shareFiles(id:pathsPtr:count:textPtr:titlePtr:onActivityFinished:)",
         "children": [
           {
             "kind": "TypeNominal",
@@ -284,35 +196,35 @@
           },
           {
             "kind": "TypeNominal",
-            "name": "Int64",
-            "printedName": "Swift.Int64",
-            "usr": "s:s5Int64V"
+            "name": "Int32",
+            "printedName": "Swift.Int32",
+            "usr": "s:s5Int32V"
           },
           {
             "kind": "TypeNominal",
             "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.UnsafePointer<Swift.Int8>?>?",
+            "printedName": "Swift.UnsafePointer<Swift.UnsafePointer<Swift.UInt8>?>?",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.UnsafePointer<Swift.Int8>?>",
+                "printedName": "Swift.UnsafePointer<Swift.UnsafePointer<Swift.UInt8>?>",
                 "children": [
                   {
                     "kind": "TypeNominal",
                     "name": "Optional",
-                    "printedName": "Swift.UnsafePointer<Swift.Int8>?",
+                    "printedName": "Swift.UnsafePointer<Swift.UInt8>?",
                     "children": [
                       {
                         "kind": "TypeNominal",
                         "name": "UnsafePointer",
-                        "printedName": "Swift.UnsafePointer<Swift.Int8>",
+                        "printedName": "Swift.UnsafePointer<Swift.UInt8>",
                         "children": [
                           {
                             "kind": "TypeNominal",
-                            "name": "Int8",
-                            "printedName": "Swift.Int8",
-                            "usr": "s:s4Int8V"
+                            "name": "UInt8",
+                            "printedName": "Swift.UInt8",
+                            "usr": "s:s5UInt8V"
                           }
                         ],
                         "usr": "s:SP"
@@ -335,18 +247,18 @@
           {
             "kind": "TypeNominal",
             "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
+            "printedName": "Swift.UnsafePointer<Swift.UInt8>?",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
+                "printedName": "Swift.UnsafePointer<Swift.UInt8>",
                 "children": [
                   {
                     "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
+                    "name": "UInt8",
+                    "printedName": "Swift.UInt8",
+                    "usr": "s:s5UInt8V"
                   }
                 ],
                 "usr": "s:SP"
@@ -357,18 +269,18 @@
           {
             "kind": "TypeNominal",
             "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
+            "printedName": "Swift.UnsafePointer<Swift.UInt8>?",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
+                "printedName": "Swift.UnsafePointer<Swift.UInt8>",
                 "children": [
                   {
                     "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
+                    "name": "UInt8",
+                    "printedName": "Swift.UInt8",
+                    "usr": "s:s5UInt8V"
                   }
                 ],
                 "usr": "s:SP"
@@ -379,7 +291,7 @@
           {
             "kind": "TypeFunc",
             "name": "Function",
-            "printedName": "(Swift.Int64) -> ()",
+            "printedName": "(Swift.Int32) -> ()",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -388,218 +300,16 @@
               },
               {
                 "kind": "TypeNominal",
-                "name": "Int64",
-                "printedName": "Swift.Int64",
-                "usr": "s:s5Int64V"
+                "name": "Int32",
+                "printedName": "Swift.Int32",
+                "usr": "s:s5Int32V"
               }
             ]
           }
         ],
         "declKind": "Func",
-        "usr": "c:(cm)shareFilesWithTimestamp:filePathsPtr:count:textPtr:titlePtr:onDoneCallback:",
-        "mangledName": "$s6UShare10shareFiles9timestamp12filePathsPtr5count04textG005titleG014onDoneCallbackSbs5Int64V_SPySPys4Int8VGSgGSgs5Int32VA2NyAJXCtF",
-        "moduleName": "UShare",
-        "declAttributes": [
-          "AccessControl",
-          "CDecl"
-        ],
-        "funcSelfKind": "NonMutating"
-      },
-      {
-        "kind": "Function",
-        "name": "shareImage",
-        "printedName": "shareImage(imagePtr:size:textPtr:titlePtr:)",
-        "children": [
-          {
-            "kind": "TypeNominal",
-            "name": "Bool",
-            "printedName": "Swift.Bool",
-            "usr": "s:Sb"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafeMutableRawPointer?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafeMutableRawPointer",
-                "printedName": "Swift.UnsafeMutableRawPointer",
-                "usr": "s:Sv"
-              }
-            ],
-            "usr": "s:Sq"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Int32",
-            "printedName": "Swift.Int32",
-            "usr": "s:s5Int32V"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "usr": "s:Sq"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "usr": "s:Sq"
-          }
-        ],
-        "declKind": "Func",
-        "usr": "c:(cm)shareImageWithImagePtr:size:textPtr:titlePtr:",
-        "mangledName": "$s6UShare10shareImage8imagePtr4size04textE005titleE0SbSvSg_s5Int32VSPys4Int8VGSgAMtF",
-        "moduleName": "UShare",
-        "declAttributes": [
-          "AccessControl",
-          "CDecl"
-        ],
-        "funcSelfKind": "NonMutating"
-      },
-      {
-        "kind": "Function",
-        "name": "shareImages",
-        "printedName": "shareImages(imagePtrs:sizes:count:textPtr:titlePtr:)",
-        "children": [
-          {
-            "kind": "TypeNominal",
-            "name": "Bool",
-            "printedName": "Swift.Bool",
-            "usr": "s:Sb"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.UnsafeMutableRawPointer>?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.UnsafeMutableRawPointer>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "UnsafeMutableRawPointer",
-                    "printedName": "Swift.UnsafeMutableRawPointer",
-                    "usr": "s:Sv"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "usr": "s:Sq"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int32>?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int32>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Int32",
-                    "printedName": "Swift.Int32",
-                    "usr": "s:s5Int32V"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "usr": "s:Sq"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Int32",
-            "printedName": "Swift.Int32",
-            "usr": "s:s5Int32V"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "usr": "s:Sq"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Optional",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "usr": "s:Sq"
-          }
-        ],
-        "declKind": "Func",
-        "usr": "c:(cm)shareImagesWithImagePtrs:sizes:count:textPtr:titlePtr:",
-        "mangledName": "$s6UShare11shareImages9imagePtrs5sizes5count7textPtr05titleI0SbSPySvGSg_SPys5Int32VGSgAKSPys4Int8VGSgAQtF",
+        "usr": "c:(cm)shareFilesWithId:pathsPtr:count:textPtr:titlePtr:onActivityFinished:",
+        "mangledName": "$s6UShare10shareFiles2id8pathsPtr5count04textF005titleF018onActivityFinishedSbs5Int32V_SPySPys5UInt8VGSgGSgAj2NyAJXCtF",
         "moduleName": "UShare",
         "declAttributes": [
           "AccessControl",
