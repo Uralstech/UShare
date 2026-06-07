@@ -12,58 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using UnityEngine;
-
-#if UNITY_ANDROID
+using UnityEngine.Android;
 
 #nullable enable
 namespace Uralstech.UShare
 {
-    /// <summary>
-    /// Path utilities for Android.
-    /// </summary>
-    public class AndroidPathHelper
+    /// <summary>Path utilities for Android.</summary>
+    public sealed class AndroidPathHelper
     {
-        /// <summary>
-        /// Returns the path to the application's assigned cache directory (context.cacheDir).
-        /// </summary>
-        public string CacheDirectory => PluginInstance!.Call<string>("getCacheDirPath");
+        /// <summary>The application's cache directory (context.cacheDir).</summary>
+        public string CacheDirectory => GetPath("getCacheDir")!;
+        
+        /// <summary>The application's external cache directory (context.externalCacheDir).</summary>
+        public string? ExternalCacheDirectory => GetPath("getExternalCacheDir");
 
-        /// <summary>
-        /// Returns the path to the application's assigned external cache directory (context.externalCacheDir).
-        /// </summary>
-        public string? ExternalCacheDirectory => PluginInstance!.Call<string?>("getExternalCacheDirPath");
+        /// <summary>The application's directory for persistent files (context.filesDir).</summary>
+        public string FilesDirectory => GetPath("getFilesDir")!;
 
-        /// <summary>
-        /// Returns the path to the application's assigned files directory (context.filesDir).
-        /// </summary>
-        public string FilesDirectory => PluginInstance!.Call<string>("getFilesDirPath");
+        /// <summary>The application's external directory for persistent files (from context.getExternalFilesDir).</summary>
+        public string? ExternalFilesDirectory => GetExternalFilesDirectory();
 
-        /// <summary>
-        /// Returns the path to the application's assigned external files directory (from context.getExternalFilesDir).
-        /// </summary>
-        public string? ExternalFilesDirectory => PluginInstance!.Call<string?>("getExternalFilesDirPath");
-
-        /// <summary>
-        /// The native plugin instance.
-        /// </summary>
-        protected AndroidJavaObject? PluginInstance { get; private set; }
-
-        /// <param name="pluginInstance">The native plugin instance.</param>
-        internal protected AndroidPathHelper(AndroidJavaObject? pluginInstance)
+        /// <summary>Gets the application's external directory for persistent files (from context.getExternalFilesDir).</summary>
+        public static string? GetExternalFilesDirectory(string? type = null)
         {
-            PluginInstance = pluginInstance;
+            if (Application.platform != RuntimePlatform.Android)
+                throw new PlatformNotSupportedException();
+            
+            using AndroidJavaObject? javaFile = AndroidApplication.currentContext.Call<AndroidJavaObject>("getExternalFilesDir", type);
+            return javaFile?.Call<string>("getAbsolutePath");
         }
-
-        /// <summary>
-        /// Invalidates this instance by setting <see cref="PluginInstance"/> to <see langword="null"/>.
-        /// It is the responsibility of the creator of this object to dispose of <see cref="PluginInstance"/>.
-        /// </summary>
-        internal protected void Invalidate()
+        
+        private static string? GetPath(string methodName)
         {
-            PluginInstance = null;
+            if (Application.platform != RuntimePlatform.Android)
+                throw new PlatformNotSupportedException();
+            
+            using AndroidJavaObject? javaFile = AndroidApplication.currentContext.Call<AndroidJavaObject>(methodName);
+            return javaFile?.Call<string>("getAbsolutePath");
         }
     }
 }
-
-#endif

@@ -11,13 +11,7 @@ import _StringProcessing
 import _SwiftConcurrencyShims
 import os.log
 import os
-@_cdecl("ushare_interface_share_text")
-public func shareText(textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?) -> Swift.Bool
-@_cdecl("ushare_interface_share_file")
-public func shareFile(timestamp: Swift.Int64, filePathPtr: Swift.UnsafePointer<Swift.CChar>?, textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?, onDoneCallback: @convention(c) (Swift.Int64) -> Swift.Void) -> Swift.Bool
-@_cdecl("ushare_interface_share_files")
-public func shareFiles(timestamp: Swift.Int64, filePathsPtr: Swift.UnsafePointer<Swift.UnsafePointer<Swift.CChar>?>?, count: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?, onDoneCallback: @convention(c) (Swift.Int64) -> Swift.Void) -> Swift.Bool
-@_cdecl("ushare_interface_share_image")
-public func shareImage(imagePtr: Swift.UnsafeMutableRawPointer?, size: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?) -> Swift.Bool
-@_cdecl("ushare_interface_share_images")
-public func shareImages(imagePtrs: Swift.UnsafePointer<Swift.UnsafeMutableRawPointer>?, sizes: Swift.UnsafePointer<Swift.Int32>?, count: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.CChar>?, titlePtr: Swift.UnsafePointer<Swift.CChar>?) -> Swift.Bool
+@_cdecl("ushare_ios_share_text")
+public func shareText(id: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.UInt8>?, titlePtr: Swift.UnsafePointer<Swift.UInt8>?, onActivityFinished: @convention(c) (Swift.Int32) -> Swift.Void) -> Swift.Bool
+@_cdecl("ushare_ios_share_files")
+public func shareFiles(id: Swift.Int32, pathsPtr: Swift.UnsafePointer<Swift.UnsafePointer<Swift.UInt8>?>?, count: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.UInt8>?, titlePtr: Swift.UnsafePointer<Swift.UInt8>?, onActivityFinished: @convention(c) (Swift.Int32) -> Swift.Void) -> Swift.Bool
