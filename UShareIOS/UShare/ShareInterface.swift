@@ -1,4 +1,4 @@
-// Copyright 2025 URAV ADVANCED LEARNING SYSTEMS PRIVATE LIMITED
+// Copyright 2026 URAV ADVANCED LEARNING SYSTEMS PRIVATE LIMITED
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,6 +26,49 @@ public func shareText(id: Int32, textPtr: UnsafePointer<UInt8>?, titlePtr: Unsaf
     
     let title = getString(from: titlePtr)
     return shareData(id: id, data: [ShareableText(text, title)], callback: onActivityFinished);
+}
+
+
+@_cdecl("ushare_ios_share_images")
+public func shareImages(id: Int32, imagesPtr: UnsafePointer<UnsafeRawPointer?>?, sizes: UnsafePointer<Int32>?, count: Int32,
+                        textPtr: UnsafePointer<UInt8>?, titlePtr: UnsafePointer<UInt8>?, onActivityFinished: @convention(c) @escaping (Int32) -> Void) -> Bool {
+    
+    guard let imagesPtr = imagesPtr, let sizes = sizes else {
+        logger.error("Expected non-NULL array of images and sizes.")
+        return false
+    }
+    
+    guard count > 0 else {
+        logger.error("Expected count > 0.")
+        return false
+    }
+    
+    let text = getString(from: textPtr)
+    let title = getString(from: titlePtr)
+    
+    var data: [Any] = []
+    for i in 0..<Int(count) {
+        
+        guard
+            let imagePtr = imagesPtr[i],
+            let image = UIImage(data: Data(bytes: imagePtr, count: Int(sizes[i])))
+        else {
+            logger.error("Expected all elements in images to be valid, non-NULL images.")
+            return false
+        }
+        
+        if i == 0 {
+            data.append(ShareableImage(image, title, text))
+        } else {
+            data.append(image)
+        }
+    }
+    
+    if let text = text {
+        data.append(text)
+    }
+    
+    return shareData(id: id, data: data, callback: onActivityFinished);
 }
 
 @_cdecl("ushare_ios_share_files")
@@ -59,14 +102,8 @@ public func shareFiles(id: Int32, pathsPtr: UnsafePointer<UnsafePointer<UInt8>?>
         }
         
         let url = URL(fileURLWithPath: path)
-        let image = UIImage(contentsOfFile: path)
-        
-        if i == 0, let image = image {
-            data.append(ShareableImage(image, title, text))
-        } else if i == 0 {
+        if i == 0 {
             data.append(ShareableUri(url, title))
-        } else if let image = image {
-            data.append(image)
         } else {
             data.append(url)
         }
