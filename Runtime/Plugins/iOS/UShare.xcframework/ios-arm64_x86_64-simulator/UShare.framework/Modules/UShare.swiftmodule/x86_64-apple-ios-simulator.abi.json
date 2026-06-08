@@ -496,9 +496,9 @@
     {
       "filePath": "\/Users\/celeste\/Desktop\/Unity Projects\/UShare\/UShareIOS\/UShare\/UShare.swift",
       "kind": "StringLiteral",
-      "offset": 694,
+      "offset": 699,
       "length": 15,
-      "value": "\"UShare_Native\""
+      "value": "\"UShare.Native\""
     }
   ]
 }

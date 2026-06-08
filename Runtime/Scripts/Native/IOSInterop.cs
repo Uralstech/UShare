@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if UNITY_IOS
-
 using System;
 using System.Runtime.InteropServices;
 
 #nullable enable
-namespace Uralstech.UShare
+namespace Uralstech.UShare.Native
 {
     /// <summary>Interface for the native iOS plugin.</summary>
     public static class IOSInterop
@@ -30,9 +28,15 @@ namespace Uralstech.UShare
         /// <param name="callback">Callback for when the activity has finished.
         /// Note that this is <b>not</b> an indication of the operation being completed.</param>
         /// <returns><see langword="true"/> if the view was presented; <see langword="false"/> otherwise.</returns>
+        /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than iOS.</exception>
+#if UNITY_IOS && !UNITY_EDITOR
         [DllImport("__Internal")]
         public static extern bool ushare_ios_share_text(int id, [MarshalAs(UnmanagedType.LPUTF8Str)] string text,
             [MarshalAs(UnmanagedType.LPUTF8Str)] string? title, ActivityFinishedCallback callback);
+#else
+        public static bool ushare_ios_share_text(int id, string text, string? title, ActivityFinishedCallback callback) => 
+            throw new PlatformNotSupportedException();
+#endif
 
         /// <summary>Shares images using UIActivityViewController.</summary>
         /// <param name="id">The ID of this event, to be returned in <paramref name="callback"/>.</param>
@@ -44,11 +48,17 @@ namespace Uralstech.UShare
         /// <param name="callback">Callback for when the activity has finished.
         /// Note that this is <b>not</b> an indication of the operation being completed.</param>
         /// <returns><see langword="true"/> if the view was presented; <see langword="false"/> otherwise.</returns>
+        /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than iOS.</exception>
+#if UNITY_IOS && !UNITY_EDITOR
         [DllImport("__Internal")]
         public static extern bool ushare_ios_share_images(int id, IntPtr[] images, int[] sizes, int count,
             [MarshalAs(UnmanagedType.LPUTF8Str)] string? text, [MarshalAs(UnmanagedType.LPUTF8Str)] string? title,
             ActivityFinishedCallback callback);
-        
+#else
+        public static bool ushare_ios_share_images(int id, IntPtr[] images, int[] sizes, int count, string? text,
+            string? title, ActivityFinishedCallback callback) => throw new PlatformNotSupportedException();
+#endif
+
         /// <summary>Shares files using UIActivityViewController.</summary>
         /// <param name="id">The ID of this event, to be returned in <paramref name="callback"/>.</param>
         /// <param name="paths">The paths to the files being shared.</param>
@@ -58,14 +68,18 @@ namespace Uralstech.UShare
         /// <param name="callback">Callback for when the activity has finished.
         /// Note that this is <b>not</b> an indication of the operation being completed.</param>
         /// <returns><see langword="true"/> if the view was presented; <see langword="false"/> otherwise.</returns>
+        /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than iOS.</exception>
+#if UNITY_IOS && !UNITY_EDITOR
         [DllImport("__Internal")]
         public static extern bool ushare_ios_share_files(int id,
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] paths, int count,
             [MarshalAs(UnmanagedType.LPUTF8Str)] string? text, [MarshalAs(UnmanagedType.LPUTF8Str)] string? title,
             ActivityFinishedCallback callback);
-        
+#else
+        public static bool ushare_ios_share_files(int id, string[] paths, int count, string? text, string? title,
+            ActivityFinishedCallback callback) => throw new PlatformNotSupportedException();
+#endif
+
         public delegate void ActivityFinishedCallback(int id);
     }
 }
-
-#endif
