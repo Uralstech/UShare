@@ -16,10 +16,10 @@ import Foundation
 import os.log
 import UIKit
 
-private let loggerTag = "UShare_Native"
+private let loggerCategory = "UShare.Native"
 internal let logger: Logger = {
     return Bundle.main.bundleIdentifier.map {
-        Logger(subsystem: $0, category: loggerTag)
+        Logger(subsystem: $0, category: loggerCategory)
     } ?? Logger()
 }()
 

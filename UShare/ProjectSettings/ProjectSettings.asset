@@ -265,7 +265,7 @@ PlayerSettings:
   useCustomGradlePropertiesTemplate: 0
   useCustomGradleSettingsTemplate: 0
   useCustomProguardFile: 0
-  AndroidTargetArchitectures: 3
+  AndroidTargetArchitectures: 2
   AndroidAllowedArchitectures: -1
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
@@ -277,7 +277,7 @@ PlayerSettings:
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   androidAppCategory: 3
-  useAndroidAppCategory: 1
+  useAndroidAppCategory: 0
   androidAppCategoryOther: 
   AndroidEnableTango: 0
   androidEnableBanner: 1

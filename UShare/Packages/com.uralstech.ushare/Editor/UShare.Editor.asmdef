@@ -1,6 +1,6 @@
 {
     "name": "UShare.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "Uralstech.UShare.Editor",
     "references": [],
     "includePlatforms": [
         "Editor"
