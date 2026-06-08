@@ -23,18 +23,23 @@ namespace Uralstech.UShare
     public sealed class AndroidPathHelper
     {
         /// <summary>The application's cache directory (context.cacheDir).</summary>
+        /// <exception cref="PlatformNotSupportedException">Thrown if this property is accessed on a runtime other than Android.</exception>
         public string CacheDirectory => GetPath("getCacheDir")!;
         
         /// <summary>The application's external cache directory (context.externalCacheDir).</summary>
+        /// <exception cref="PlatformNotSupportedException">Thrown if this property is accessed on a runtime other than Android.</exception>
         public string? ExternalCacheDirectory => GetPath("getExternalCacheDir");
 
         /// <summary>The application's directory for persistent files (context.filesDir).</summary>
+        /// <exception cref="PlatformNotSupportedException">Thrown if this property is accessed on a runtime other than Android.</exception>
         public string FilesDirectory => GetPath("getFilesDir")!;
 
         /// <summary>The application's external directory for persistent files (from context.getExternalFilesDir).</summary>
+        /// <exception cref="PlatformNotSupportedException">Thrown if this property is accessed on a runtime other than Android.</exception>
         public string? ExternalFilesDirectory => GetExternalFilesDirectory();
 
         /// <summary>Gets the application's external directory for persistent files (from context.getExternalFilesDir).</summary>
+        /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than Android.</exception>
         public static string? GetExternalFilesDirectory(string? type = null)
         {
             if (Application.platform != RuntimePlatform.Android)
