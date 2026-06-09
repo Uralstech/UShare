@@ -19,7 +19,7 @@ using UnityEngine.Android;
 #nullable enable
 namespace Uralstech.UShare
 {
-    /// <summary>Path utilities for Android.</summary>
+    /// <summary>Utility for providing commonly used Android base paths like <c>cacheDir</c>, <c>filesDir</c>, etc.</summary>
     public sealed class AndroidPathHelper
     {
         /// <summary>The application's cache directory (context.cacheDir).</summary>
