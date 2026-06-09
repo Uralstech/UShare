@@ -1,4 +1,4 @@
-// Copyright 2025 URAV ADVANCED LEARNING SYSTEMS PRIVATE LIMITED
+// Copyright 2026 URAV ADVANCED LEARNING SYSTEMS PRIVATE LIMITED
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,14 +16,12 @@
 namespace Uralstech.UShare
 {
     /// <summary>Additional data for a share event.</summary>
-    public struct AdditionalShareData
+    public sealed class ShareOptions
     {
-        /// <summary>Overrides the path to the directory containing the file(s) to share.</summary>
-        public string? BasePath;
-
-        /// <summary>Override the Android FileProvider authority for the file(s) being shared.</summary>
-        public string? AndroidFileProviderAuthority;
-
+        /// <summary>Optional title for the share sheet.</summary>
+        /// <remarks>Requires Android 10+ and is not guaranteed to work when sharing non-text media.</remarks>
+        public string? Title;
+        
         /// <summary>Additional text to be shared along with the main content.</summary>
         /// <remarks>
         /// You can usually get away with having text in shared content along with other data
@@ -32,13 +30,9 @@ namespace Uralstech.UShare
         /// but WhatsApp will send each image as individual messages with the text attached to
         /// <i>every</i> message.
         /// </remarks>
-        public string? AdditionalText;
-
-        /// <summary>Optional title for the share sheet.</summary>
-        /// <remarks>
-        /// For Android:<br/>
-        /// Requires Android 10+ and is not guaranteed to work when sharing non-text media
-        /// </remarks>
-        public string? Title;
+        public string? Text;
+        
+        /// <summary>Overrides the Android FileProvider authority for the file(s) being shared.</summary>
+        public string? Authority;
     }
 }

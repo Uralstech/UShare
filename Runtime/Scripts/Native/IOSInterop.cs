@@ -12,8 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
+#if UNITY_IOS && !UNITY_EDITOR
+#define DECLARE_DLLIMPORTS
+
 using System.Runtime.InteropServices;
+#endif
+
+using System;
 
 #nullable enable
 namespace Uralstech.UShare.Native
@@ -29,7 +34,7 @@ namespace Uralstech.UShare.Native
         /// Note that this is <b>not</b> an indication of the operation being completed.</param>
         /// <returns><see langword="true"/> if the view was presented; <see langword="false"/> otherwise.</returns>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than iOS.</exception>
-#if UNITY_IOS && !UNITY_EDITOR
+#if DECLARE_DLLIMPORTS
         [DllImport("__Internal")]
         public static extern bool ushare_ios_share_text(int id, [MarshalAs(UnmanagedType.LPUTF8Str)] string text,
             [MarshalAs(UnmanagedType.LPUTF8Str)] string? title, ActivityFinishedCallback callback);
@@ -49,7 +54,7 @@ namespace Uralstech.UShare.Native
         /// Note that this is <b>not</b> an indication of the operation being completed.</param>
         /// <returns><see langword="true"/> if the view was presented; <see langword="false"/> otherwise.</returns>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than iOS.</exception>
-#if UNITY_IOS && !UNITY_EDITOR
+#if DECLARE_DLLIMPORTS
         [DllImport("__Internal")]
         public static extern bool ushare_ios_share_images(int id, IntPtr[] images, int[] sizes, int count,
             [MarshalAs(UnmanagedType.LPUTF8Str)] string? text, [MarshalAs(UnmanagedType.LPUTF8Str)] string? title,
@@ -69,7 +74,7 @@ namespace Uralstech.UShare.Native
         /// Note that this is <b>not</b> an indication of the operation being completed.</param>
         /// <returns><see langword="true"/> if the view was presented; <see langword="false"/> otherwise.</returns>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than iOS.</exception>
-#if UNITY_IOS && !UNITY_EDITOR
+#if DECLARE_DLLIMPORTS
         [DllImport("__Internal")]
         public static extern bool ushare_ios_share_files(int id,
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPUTF8Str)] string[] paths, int count,
@@ -80,6 +85,8 @@ namespace Uralstech.UShare.Native
             ActivityFinishedCallback callback) => throw new PlatformNotSupportedException();
 #endif
 
+        /// <summary>Invoked after the completion or dismissal of a share event.</summary>
+        /// <param name="id">The ID of the event.</param>
         public delegate void ActivityFinishedCallback(int id);
     }
 }
