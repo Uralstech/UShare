@@ -38,7 +38,7 @@ namespace Uralstech.UShare
         private static readonly bool s_isIOS = Application.platform == RuntimePlatform.IPhonePlayer;
         private static readonly bool s_isSupported = s_isAndroid || s_isIOS;
 
-        private static int s_eventIdCounter = 0;
+        private static int s_eventIdCounter;
         private static int GetEventId() => Interlocked.Increment(ref s_eventIdCounter);
 
         /// <summary>Result for QOL share methods that may generate temporary files.</summary>
@@ -220,7 +220,7 @@ namespace Uralstech.UShare
         /// The plugin then creates a <a href="https://developer.apple.com/documentation/uikit/uiimage"><c>UIImage</c></a>
         /// and forwards it to the share sheet.
         /// </para>
-        /// <para>For a multi-platform method that uses this for iOS, see <see cref="TryShareImage(System.ReadOnlySpan{byte},string,Uralstech.UShare.ShareOptions?)"/></para>
+        /// <para>For a multi-platform method that uses this for iOS, see <see cref="TryShareImage(System.ReadOnlySpan{byte},string,string,Uralstech.UShare.ShareOptions?)"/></para>
         /// </remarks>
         /// <param name="id">The ID of this share event, returned in <see cref="OnResult"/>.</param>
         /// <param name="image">The image to share, must be a format supported by <c>UIImage</c>.</param>
@@ -251,7 +251,7 @@ namespace Uralstech.UShare
         /// The plugin then creates <a href="https://developer.apple.com/documentation/uikit/uiimage"><c>UIImage</c></a>s
         /// and forwards them to the share sheet.
         /// </para>
-        /// <para>For a multi-platform method that uses this for iOS, see <see cref="TryShareImages(int,System.Collections.Generic.IReadOnlyList{byte[]},string,Uralstech.UShare.ShareOptions?)"/></para>
+        /// <para>For a multi-platform method that uses this for iOS, see <see cref="TryShareImages(int,System.Collections.Generic.IReadOnlyList{byte[]},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/></para>
         /// </remarks>
         /// <param name="id">The ID of this share event, returned in <see cref="OnResult"/>.</param>
         /// <param name="images">The images to share, must be in formats supported by <c>UIImage</c>.</param>
@@ -301,7 +301,7 @@ namespace Uralstech.UShare
         /// The plugin then creates <a href="https://developer.apple.com/documentation/uikit/uiimage"><c>UIImage</c></a>s
         /// and forwards them to the share sheet.
         /// </para>
-        /// <para>For a multi-platform method that uses this for iOS, see <see cref="TryShareImages(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},string,Uralstech.UShare.ShareOptions?)"/></para>
+        /// <para>For a multi-platform method that uses this for iOS, see <see cref="TryShareImages(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/></para>
         /// </remarks>
         public unsafe bool TryShareImagesIOS(int id, IReadOnlyList<NativeArray<byte>.ReadOnly> images, ShareOptions? options = null)
         {
@@ -360,7 +360,7 @@ namespace Uralstech.UShare
         
         #region TryShareBytes APIs
         
-        /// <inheritdoc cref="TryShareBytes(int,System.ReadOnlySpan{byte},string,Uralstech.UShare.ShareOptions?)"/>
+        /// <inheritdoc cref="TryShareBytes(int,System.ReadOnlySpan{byte},string,string,Uralstech.UShare.ShareOptions?)"/>
         /// <remarks>
         /// <para>
         /// This method creates a file for the data in a cache folder which can be accessed by the share sheet. The path to this file is
@@ -368,10 +368,10 @@ namespace Uralstech.UShare
         /// </para>
         /// <para>Uses an automatically generated event ID.</para>
         /// </remarks>
-        public EventStatus TryShareBytes(ReadOnlySpan<byte> data, string contentType, ShareOptions? options = null) =>
-            TryShareBytes(GetEventId(), data, contentType, options);
+        public EventStatus TryShareBytes(ReadOnlySpan<byte> data, string fileName, string contentType, ShareOptions? options = null) =>
+            TryShareBytes(GetEventId(), data, fileName, contentType, options);
         
-        /// <inheritdoc cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{byte[]},string,Uralstech.UShare.ShareOptions?)"/>
+        /// <inheritdoc cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{byte[]},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>
         /// <remarks>
         /// <para>
         /// This method creates a file for each byte array in a cache folder which can be accessed by the share sheet. The paths to these files are
@@ -379,12 +379,12 @@ namespace Uralstech.UShare
         /// </para>
         /// <para>Uses an automatically generated event ID.</para>
         /// </remarks>
-        public EventStatus TryShareBytes(IReadOnlyList<byte[]> data, string contentType, ShareOptions? options = null) =>
-            TryShareBytes(GetEventId(), data, contentType, options);
+        public EventStatus TryShareBytes(IReadOnlyList<byte[]> data, IReadOnlyList<string> fileNames, string contentType, ShareOptions? options = null) =>
+            TryShareBytes(GetEventId(), data, fileNames, contentType, options);
         
-        /// <inheritdoc cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{byte[]},string,Uralstech.UShare.ShareOptions?)"/>
-        public EventStatus TryShareBytes(IReadOnlyList<NativeArray<byte>.ReadOnly> data, string contentType, ShareOptions? options = null) =>
-            TryShareBytes(GetEventId(), data, contentType, options);
+        /// <inheritdoc cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{byte[]},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>
+        public EventStatus TryShareBytes(IReadOnlyList<NativeArray<byte>.ReadOnly> data, IReadOnlyList<string> fileNames, string contentType, ShareOptions? options = null) =>
+            TryShareBytes(GetEventId(), data, fileNames, contentType, options);
         
         /// <summary>Shares data to other apps using the system share sheet.</summary>
         /// <remarks>
@@ -396,15 +396,19 @@ namespace Uralstech.UShare
         /// </remarks>
         /// <param name="id">The ID of this share event, returned in <see cref="OnResult"/>.</param>
         /// <param name="data">The data to share.</param>
+        /// <param name="fileName">
+        /// The name of the temporary file. Since this is displayed to the user, it's recommended to set a
+        /// human-readable description of the data. Some platforms like iOS may even obfuscate files with non-standard extensions.
+        /// </param>
         /// <param name="contentType">The MIME type of the data; see <see cref="CommonMimeTypes"/> for common MIME types.</param>
         /// <param name="options">Additional options for the event.</param>
-        /// <returns><see langword="true"/> if the share sheet activity was presented; <see langword="false"/> otherwise.</returns>
+        /// <returns>An <see cref="EventStatus"/> object with <see cref="EventStatus.Success"/> = <see langword="true"/> if the share sheet activity was presented; <see langword="false"/> otherwise.</returns>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than Android or iOS.</exception>
-        public EventStatus TryShareBytes(int id, ReadOnlySpan<byte> data, string contentType, ShareOptions? options = null)
+        public EventStatus TryShareBytes(int id, ReadOnlySpan<byte> data, string fileName, string contentType, ShareOptions? options = null)
         {
             if (!s_isSupported) throw new PlatformNotSupportedException();
             
-            if (!TryCreateTempFile(data, out string path))
+            if (!TryCreateTempFile(data, fileName, out string path))
                 return new EventStatus(false, Array.Empty<string>());
             
             bool success = TryShareFile(id, path, contentType, options);
@@ -421,28 +425,35 @@ namespace Uralstech.UShare
         /// </remarks>
         /// <param name="id">The ID of this share event, returned in <see cref="OnResult"/>.</param>
         /// <param name="data">The data to share.</param>
+        /// <param name="fileNames">
+        /// The names of the temporary files. Since these are displayed to the user, it's recommended to set
+        /// human-readable descriptions of the data. Some platforms like iOS may even obfuscate files with non-standard extensions.
+        /// </param>
         /// <param name="contentType">The MIME type of the combined data; see <see cref="CommonMimeTypes"/> for common MIME types.</param>
         /// <param name="options">Additional options for the event.</param>
-        /// <returns><see langword="true"/> if the share sheet activity was presented; <see langword="false"/> otherwise.</returns>
+        /// <returns>An <see cref="EventStatus"/> object with <see cref="EventStatus.Success"/> = <see langword="true"/> if the share sheet activity was presented; <see langword="false"/> otherwise.</returns>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than Android or iOS.</exception>
-        public EventStatus TryShareBytes(int id, IReadOnlyList<byte[]> data, string contentType, ShareOptions? options = null) =>
-            TryShareBytes(id, data, static data => data, contentType, options);
+        /// <exception cref="ArgumentException">If <paramref name="fileNames"/> is a different size to <paramref name="data"/>.</exception>
+        public EventStatus TryShareBytes(int id, IReadOnlyList<byte[]> data, IReadOnlyList<string> fileNames, string contentType, ShareOptions? options = null) =>
+            TryShareBytes(id, data, fileNames, static data => data, contentType, options);
         
-        /// <inheritdoc cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{byte[]},string,Uralstech.UShare.ShareOptions?)"/>
-        public EventStatus TryShareBytes(int id, IReadOnlyList<NativeArray<byte>.ReadOnly> data, string contentType, ShareOptions? options = null) =>
-            TryShareBytes(id, data, static data => data, contentType, options);
+        /// <inheritdoc cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{byte[]},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>
+        public EventStatus TryShareBytes(int id, IReadOnlyList<NativeArray<byte>.ReadOnly> data, IReadOnlyList<string> fileNames, string contentType, ShareOptions? options = null) =>
+            TryShareBytes(id, data, fileNames, static data => data, contentType, options);
         
         private delegate ReadOnlySpan<byte> SpanTransformer<in T>(T data);
-        private EventStatus TryShareBytes<T>(int id, IReadOnlyList<T> data, SpanTransformer<T> transformer, string contentType, ShareOptions? options)
+        private EventStatus TryShareBytes<T>(int id, IReadOnlyList<T> data, IReadOnlyList<string> fileNames, SpanTransformer<T> transformer, string contentType, ShareOptions? options)
         {
             if (!s_isSupported) throw new PlatformNotSupportedException();
+            if (fileNames.Count != data.Count)
+                throw new ArgumentException($"{nameof(fileNames)} and {nameof(data)} must have the same length.", nameof(fileNames));
 
             int count = data.Count;
             List<string> paths = new(count);
 
             for (int i = 0; i < count; i++)
             {
-                if (!TryCreateTempFile(transformer(data[i]), out string path))
+                if (!TryCreateTempFile(transformer(data[i]), fileNames[i], out string path))
                     return new EventStatus(false, paths);
                 paths.Add(path);
             }
@@ -455,64 +466,64 @@ namespace Uralstech.UShare
 
         #region TryShareImage APIs
         
-        /// <summary>Equivalent to <see cref="TryShareBytes(System.ReadOnlySpan{byte},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImageIOS"/> on iOS.</summary>
+        /// <summary>Equivalent to <see cref="TryShareBytes(System.ReadOnlySpan{byte},string,string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImageIOS"/> on iOS.</summary>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than Android or iOS.</exception>
-        /// <seealso cref="TryShareBytes(System.ReadOnlySpan{byte},string,Uralstech.UShare.ShareOptions?)"/>
+        /// <seealso cref="TryShareBytes(System.ReadOnlySpan{byte},string,string,Uralstech.UShare.ShareOptions?)"/>
         /// <seealso cref="TryShareImageIOS"/>
-        public EventStatus TryShareImage(ReadOnlySpan<byte> image, string contentType, ShareOptions? options = null) =>
-            TryShareImage(GetEventId(), image, contentType, options);
+        public EventStatus TryShareImage(ReadOnlySpan<byte> image, string fileName, string contentType, ShareOptions? options = null) =>
+            TryShareImage(GetEventId(), image, fileName, contentType, options);
         
-        /// <summary>Equivalent to <see cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{byte[]},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{byte[]},Uralstech.UShare.ShareOptions?)"/> on iOS.</summary>
+        /// <summary>Equivalent to <see cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{byte[]},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{byte[]},Uralstech.UShare.ShareOptions?)"/> on iOS.</summary>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than Android or iOS.</exception>
-        /// <seealso cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{byte[]},string,Uralstech.UShare.ShareOptions?)"/>
+        /// <seealso cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{byte[]},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>
         /// <seealso cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{byte[]},Uralstech.UShare.ShareOptions?)"/>
-        public EventStatus TryShareImages(IReadOnlyList<byte[]> images, string contentType, ShareOptions? options = null) =>
-            TryShareImages(GetEventId(), images, contentType, options);
+        public EventStatus TryShareImages(IReadOnlyList<byte[]> images, IReadOnlyList<string> fileNames, string contentType, ShareOptions? options = null) =>
+            TryShareImages(GetEventId(), images, fileNames, contentType, options);
         
-        /// <summary>Equivalent to <see cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},Uralstech.UShare.ShareOptions?)"/> on iOS.</summary>
+        /// <summary>Equivalent to <see cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},Uralstech.UShare.ShareOptions?)"/> on iOS.</summary>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than Android or iOS.</exception>
-        /// <seealso cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},string,Uralstech.UShare.ShareOptions?)"/>
+        /// <seealso cref="TryShareBytes(System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>
         /// <seealso cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},Uralstech.UShare.ShareOptions?)"/>
-        public EventStatus TryShareImages(IReadOnlyList<NativeArray<byte>.ReadOnly> images, string contentType, ShareOptions? options = null) =>
-            TryShareImages(GetEventId(), images, contentType, options);
+        public EventStatus TryShareImages(IReadOnlyList<NativeArray<byte>.ReadOnly> images, IReadOnlyList<string> fileNames, string contentType, ShareOptions? options = null) =>
+            TryShareImages(GetEventId(), images, fileNames, contentType, options);
         
-        /// <summary>Equivalent to <see cref="TryShareBytes(int,System.ReadOnlySpan{byte},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImageIOS"/> on iOS.</summary>
+        /// <summary>Equivalent to <see cref="TryShareBytes(int,System.ReadOnlySpan{byte},string,string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImageIOS"/> on iOS.</summary>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than Android or iOS.</exception>
-        /// <seealso cref="TryShareBytes(int,System.ReadOnlySpan{byte},string,Uralstech.UShare.ShareOptions?)"/>
+        /// <seealso cref="TryShareBytes(int,System.ReadOnlySpan{byte},string,string,Uralstech.UShare.ShareOptions?)"/>
         /// <seealso cref="TryShareImageIOS"/>
-        public EventStatus TryShareImage(int id, ReadOnlySpan<byte> image, string contentType,
+        public EventStatus TryShareImage(int id, ReadOnlySpan<byte> image, string fileName, string contentType,
             ShareOptions? options = null)
         {
             if (!s_isSupported) throw new PlatformNotSupportedException();
-            if (s_isAndroid) return TryShareBytes(id, image, contentType, options);
+            if (s_isAndroid) return TryShareBytes(id, image, fileName, contentType, options);
             
             bool success = TryShareImageIOS(id, image, options);
             return new EventStatus(success, Array.Empty<string>());
         }
         
-        /// <summary>Equivalent to <see cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{byte[]},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{byte[]},Uralstech.UShare.ShareOptions?)"/> on iOS.</summary>
+        /// <summary>Equivalent to <see cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{byte[]},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{byte[]},Uralstech.UShare.ShareOptions?)"/> on iOS.</summary>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than Android or iOS.</exception>
-        /// <seealso cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{byte[]},string,Uralstech.UShare.ShareOptions?)"/>
+        /// <seealso cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{byte[]},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>
         /// <seealso cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{byte[]},Uralstech.UShare.ShareOptions?)"/>
-        public EventStatus TryShareImages(int id, IReadOnlyList<byte[]> images, string contentType,
+        public EventStatus TryShareImages(int id, IReadOnlyList<byte[]> images, IReadOnlyList<string> fileNames, string contentType,
             ShareOptions? options = null)
         {
             if (!s_isSupported) throw new PlatformNotSupportedException();
-            if (s_isAndroid) return TryShareBytes(id, images, contentType, options);
+            if (s_isAndroid) return TryShareBytes(id, images, fileNames, contentType, options);
             
             bool success = TryShareImagesIOS(id, images, options);
             return new EventStatus(success, Array.Empty<string>());
         }
 
-        /// <summary>Equivalent to <see cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},Uralstech.UShare.ShareOptions?)"/> on iOS.</summary>
+        /// <summary>Equivalent to <see cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>, but falls back to <see cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},Uralstech.UShare.ShareOptions?)"/> on iOS.</summary>
         /// <exception cref="PlatformNotSupportedException">Thrown if this method is called on a runtime other than Android or iOS.</exception>
-        /// <seealso cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},string,Uralstech.UShare.ShareOptions?)"/>
+        /// <seealso cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>
         /// <seealso cref="TryShareImagesIOS(int,System.Collections.Generic.IReadOnlyList{Unity.Collections.NativeArray{byte}.ReadOnly},Uralstech.UShare.ShareOptions?)"/>
-        public EventStatus TryShareImages(int id, IReadOnlyList<NativeArray<byte>.ReadOnly> images, string contentType,
+        public EventStatus TryShareImages(int id, IReadOnlyList<NativeArray<byte>.ReadOnly> images, IReadOnlyList<string> fileNames, string contentType,
             ShareOptions? options = null)
         {
             if (!s_isSupported) throw new PlatformNotSupportedException();
-            if (s_isAndroid) return TryShareBytes(id, images, contentType, options);
+            if (s_isAndroid) return TryShareBytes(id, images, fileNames, contentType, options);
             
             bool success = TryShareImagesIOS(id, images, options);
             return new EventStatus(success, Array.Empty<string>());
@@ -537,15 +548,16 @@ namespace Uralstech.UShare
             );
         }
         
-        private bool TryCreateTempFile(ReadOnlySpan<byte> data, out string path)
+        private bool TryCreateTempFile(ReadOnlySpan<byte> data, string fileName, out string path)
         {
             path = string.Empty;
+            
             try
             {
                 string directory = GetDefaultBasePath();
                 Directory.CreateDirectory(directory);
-                
-                path = Path.Join(directory, Path.GetRandomFileName());
+
+                path = Path.Join(directory, fileName);
                 using FileStream stream = new(path, FileMode.Create, FileAccess.Write, FileShare.Read);
                 stream.Write(data);
 
