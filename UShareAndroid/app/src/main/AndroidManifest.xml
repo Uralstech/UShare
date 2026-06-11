@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest></manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <receiver android:name="com.uralstech.ushare.ShareBroadcastReceiver" android:exported="false"/>
+    </application>
+</manifest>

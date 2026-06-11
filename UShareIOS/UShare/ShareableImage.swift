@@ -21,7 +21,7 @@ final class ShareableImage: NSObject, UIActivityItemSource {
     private let title: String?
     private let text: String?
 
-    init(image: UIImage, title: String?, text: String?) {
+    init(_ image: UIImage, _ title: String?, _ text: String?) {
         self.image = image
         self.title = title
         self.text = text
@@ -39,7 +39,7 @@ final class ShareableImage: NSObject, UIActivityItemSource {
     func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
         let metadata = LPLinkMetadata()
         metadata.imageProvider = NSItemProvider(object: image)
-        metadata.title = title ?? text
+        metadata.title = title
         
         if title != nil, let text = text {
             metadata.originalURL = URL(fileURLWithPath: text)

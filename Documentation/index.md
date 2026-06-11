@@ -11,7 +11,7 @@ Share sheet support for mobile platforms.
 
 ## Installation
 
-This package was made for Unity 6.0 and above. Built and tested in Unity 6.2.
+This package was made for Unity 6.0 and above. Built and tested in Unity 6.4.
 
 # [OpenUPM](#tab/openupm)
 
@@ -32,13 +32,13 @@ This package was made for Unity 6.0 and above. Built and tested in Unity 6.2.
 2. Select the `+` icon and `Add package from git URL...`
 3. Paste the UPM branch URL and press enter:
     - `https://github.com/Uralstech/UShare.git#upm`
-4. Check the instructions for [`Utils.Loggers`](https://uralstech.github.io/Utils.Loggers) and [`Utils.Singleton`](https://uralstech.github.io/Utils.Singleton) to install the dependencies
+4. Check the instructions for [`Utils.Singleton`](https://uralstech.github.io/Utils.Singleton) to install the dependency
 
 # [GitHub Clone](#tab/github)
 
 1. Clone or download the repository from the desired branch (master, preview/unstable)
 2. Drag the package folder `UShare/UShare/Packages/com.uralstech.ushare` into your Unity project's `Packages` folder
-3. Check the instructions for [`Utils.Loggers`](https://uralstech.github.io/Utils.Loggers) and [`Utils.Singleton`](https://uralstech.github.io/Utils.Singleton) to install the dependencies
+3. Check the instructions for [`Utils.Singleton`](https://uralstech.github.io/Utils.Singleton) to install the dependency
 
 ---
 

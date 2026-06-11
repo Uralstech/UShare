@@ -20,7 +20,7 @@ final class ShareableText: NSObject, UIActivityItemSource {
     private let text: String
     private let title: String?
 
-    init(text: String, title: String?) {
+    init(_ text: String, _ title: String?) {
         self.text = text
         self.title = title
         super.init()
@@ -36,7 +36,7 @@ final class ShareableText: NSObject, UIActivityItemSource {
 
     func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
         let metadata = LPLinkMetadata()
-        metadata.title = title ?? text
+        metadata.title = title
         
         if title != nil {
             metadata.originalURL = URL(fileURLWithPath: text)

@@ -1,9 +1,8 @@
 {
     "name": "UShare.Runtime",
-    "rootNamespace": "",
+    "rootNamespace": "Uralstech.UShare",
     "references": [
-        "GUID:2281fe9ed9abb88469162fc481fcc7a1",
-        "GUID:45369721003751a48bafaa29c2d43785"
+        "GUID:2281fe9ed9abb88469162fc481fcc7a1"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

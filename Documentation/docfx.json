@@ -5,7 +5,7 @@
         {
           "src": "../UShare",
           "files": [
-            "Packages/com.uralstech.ushare/**/*.cs"
+            "Packages/com.uralstech.ushare/Runtime/**/*.cs"
           ]
         }
       ],
