@@ -439,7 +439,7 @@ namespace Uralstech.UShare
         
         /// <inheritdoc cref="TryShareBytes(int,System.Collections.Generic.IReadOnlyList{byte[]},System.Collections.Generic.IReadOnlyList{string},string,Uralstech.UShare.ShareOptions?)"/>
         public EventStatus TryShareBytes(int id, IReadOnlyList<NativeArray<byte>.ReadOnly> data, IReadOnlyList<string> fileNames, string contentType, ShareOptions? options = null) =>
-            TryShareBytes(id, data, fileNames, static data => data, contentType, options);
+            TryShareBytes(id, data, fileNames, static data => data.AsReadOnlySpan(), contentType, options);
         
         private delegate ReadOnlySpan<byte> SpanTransformer<in T>(T data);
         private EventStatus TryShareBytes<T>(int id, IReadOnlyList<T> data, IReadOnlyList<string> fileNames, SpanTransformer<T> transformer, string contentType, ShareOptions? options)
