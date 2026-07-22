@@ -3,7 +3,7 @@
   "displayName": "UShare",
   "description": "Share sheet support for mobile platforms.\n\nUShare v2.0.0 is a major rewrite of the package that primarily addresses a critical issue. As part of this release, a new ShareSheetManagerV2 class has been introduced, while the existing ShareSheetManager class has been sealed and deprecated.\n\nIf your application currently uses ShareSheetManager, all public APIs will continue to function as before. However, it is recommended that new and existing projects migrate to ShareSheetManagerV2.\n\nPlease note that temporary files created during share operations are no longer cleaned up automatically by either class.\n\nRefer to the updated Quick Start and reference manual for the new API.",
   "keywords": [],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "hideInEditor": false,
   "author": {
     "name": "Udayshankar Ravikumar",
@@ -18,10 +18,10 @@
     "repository": "https://github.com/Uralstech/UShare.git"
   },
   "dependencies": {
+    "com.uralstech.utils.singleton": "1.2.3",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.jsonserialize": "1.0.0",
-    "com.unity.modules.imgui": "1.0.0",
-    "com.uralstech.utils.singleton": "1.2.1"
+    "com.unity.modules.imgui": "1.0.0"
   },
   "unity": "6000.0"
 }
