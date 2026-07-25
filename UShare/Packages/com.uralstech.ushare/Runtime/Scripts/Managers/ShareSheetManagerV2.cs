@@ -38,7 +38,11 @@ namespace Uralstech.UShare
         private static readonly bool s_isIOS = Application.platform == RuntimePlatform.IPhonePlayer;
         private static readonly bool s_isSupported = s_isAndroid || s_isIOS;
 
+#if UNITY_6000_5_OR_NEWER
+        [Unity.Scripting.LifecycleManagement.NoAutoStaticsCleanup]
+#endif
         private static int s_eventIdCounter;
+        
         private static int GetEventId() => Interlocked.Increment(ref s_eventIdCounter);
 
         /// <summary>Result for QOL share methods that may generate temporary files.</summary>
