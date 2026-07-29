@@ -40,8 +40,9 @@ namespace Uralstech.UShare
         public AndroidPathHelper AndroidPathHelper => ShareSheetManagerV2.Instance.AndroidPathHelper;
 #endif
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             if (_persistBetweenScenes)
                 DontDestroyOnLoad(gameObject);
             

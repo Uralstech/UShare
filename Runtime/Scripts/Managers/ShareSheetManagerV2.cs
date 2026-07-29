@@ -83,8 +83,9 @@ namespace Uralstech.UShare
         private AndroidInterop.Callbacks? _androidCallbacks;
         private AndroidJavaObject? _androidNative;
         
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             DontDestroyOnLoad(gameObject);
 
             if (s_isAndroid)
