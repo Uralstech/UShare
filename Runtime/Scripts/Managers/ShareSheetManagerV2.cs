@@ -144,7 +144,7 @@ namespace Uralstech.UShare
         {
             if (!s_isSupported) throw new PlatformNotSupportedException();
             return s_isIOS
-                ? IOSInterop.ushare_ios_share_text(id, text, title, OnActivityResult)
+                ? IOSInterop.ushare_ios_share_text(id, text, title, s_onActivityFinishedCallback)
                 : AndroidInterop.ShareText(_androidNative!, id, text, title);
         }
 
@@ -165,7 +165,7 @@ namespace Uralstech.UShare
             
             if (s_isIOS)
                 return IOSInterop.ushare_ios_share_files(id, ArrayOf(path), 1,
-                    options?.Text, options?.Title, OnActivityResult);
+                    options?.Text, options?.Title, s_onActivityFinishedCallback);
 
             using AndroidJavaObject? fileUri = GetFileURIAndroid(path, options?.Authority);
             if (fileUri == null) return false;
@@ -192,7 +192,7 @@ namespace Uralstech.UShare
             int count = paths.Length;
             if (s_isIOS)
                 return IOSInterop.ushare_ios_share_files(id, paths, count,
-                    options?.Text, options?.Title, OnActivityResult);
+                    options?.Text, options?.Title, s_onActivityFinishedCallback);
             
             AndroidJavaObject?[] fileUris = new AndroidJavaObject?[count];
             try
@@ -240,7 +240,7 @@ namespace Uralstech.UShare
             {
                 fixed (byte* imagePtr = image)
                     return IOSInterop.ushare_ios_share_images(id, ArrayOf(new IntPtr(imagePtr)),
-                        ArrayOf(image.Length), 1, options?.Text, options?.Title, OnActivityResult);
+                        ArrayOf(image.Length), 1, options?.Text, options?.Title, s_onActivityFinishedCallback);
             }
             catch (Exception ex)
             {
@@ -285,7 +285,7 @@ namespace Uralstech.UShare
                 }
 
                 return IOSInterop.ushare_ios_share_images(id, imagePtrs, sizes,
-                    count, options?.Text, options?.Title, OnActivityResult);
+                    count, options?.Text, options?.Title, s_onActivityFinishedCallback);
             }
             catch (Exception ex)
             {
@@ -327,7 +327,7 @@ namespace Uralstech.UShare
                 }
                 
                 return IOSInterop.ushare_ios_share_images(id, imagePtrs, sizes,
-                    count, options?.Text, options?.Title, OnActivityResult);
+                    count, options?.Text, options?.Title, s_onActivityFinishedCallback);
             }
             catch (Exception ex)
             {
@@ -574,6 +574,8 @@ namespace Uralstech.UShare
                 return false;
             }
         }
+
+        private static readonly IOSInterop.ActivityFinishedCallback s_onActivityFinishedCallback = OnActivityResult;
         
         [AOT.MonoPInvokeCallback(typeof(IOSInterop.ActivityFinishedCallback))]
         private static async void OnActivityResult(int id)
