@@ -30,7 +30,7 @@ namespace Uralstech.UShare.Editor
         public const string PackageId = "com.uralstech.ushare";
 
         /// <summary>
-        /// Cached result of <see cref="GetPackagePath(bool)"/>.
+        /// Cached result of <see cref="GetPackagePath()"/>.
         /// </summary>
         private static string? s_packagePathCached = string.Empty;
 
