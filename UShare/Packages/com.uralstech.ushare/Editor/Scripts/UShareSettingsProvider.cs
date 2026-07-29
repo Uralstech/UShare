@@ -27,7 +27,7 @@ namespace Uralstech.UShare.Editor
         private static SettingsProvider CreateSettingsProvider()
         {
             UShareBuildSettings settings = UShareBuildSettings.Get();
-            return new SettingsProvider("Project/UShare", SettingsScope.Project, new string[] { "UShare", "Share", "FileProvider" })
+            return new SettingsProvider("Project/UShare", SettingsScope.Project, new[] { "UShare", "Share", "FileProvider" })
             {
                 label = "UShare Settings",
                 guiHandler = _ =>
