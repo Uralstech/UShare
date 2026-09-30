@@ -32,7 +32,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.7.0",
+      "version": "1.8.0",
       "depth": 1,
       "source": "builtin",
       "dependencies": {
@@ -42,7 +42,7 @@
       }
     },
     "com.unity.ugui": {
-      "version": "2.5.0",
+      "version": "2.6.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
@@ -82,6 +82,12 @@
     "com.unity.modules.audio": {
       "version": "1.0.0",
       "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.imageconversion": {
+      "version": "1.0.0",
+      "depth": 0,
       "source": "builtin",
       "dependencies": {}
     },

@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.3.2 effective-5.10 (swiftlang-6.3.2.1.108 clang-2100.1.1.101)
-// swift-module-flags: -target x86_64-apple-ios14.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name UShare
-// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.2
+// swift-compiler-version: Apple Swift version 6.4 effective-5.10 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name UShare
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
 import Foundation
 import LinkPresentation
 import Swift
@@ -12,8 +12,8 @@ import _SwiftConcurrencyShims
 import os.log
 import os
 @_cdecl("ushare_ios_share_text")
-public func shareText(id: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.UInt8>?, titlePtr: Swift.UnsafePointer<Swift.UInt8>?, onActivityFinished: @convention(c) (Swift.Int32) -> Swift.Void) -> Swift.Bool
+public func shareText(id: Swift::Int32, textPtr: Swift::UnsafePointer<Swift::UInt8>?, titlePtr: Swift::UnsafePointer<Swift::UInt8>?, onActivityFinished: @convention(c) (Swift::Int32) -> Swift::Void) -> Swift::Bool
 @_cdecl("ushare_ios_share_images")
-public func shareImages(id: Swift.Int32, imagesPtr: Swift.UnsafePointer<Swift.UnsafeRawPointer?>?, sizes: Swift.UnsafePointer<Swift.Int32>?, count: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.UInt8>?, titlePtr: Swift.UnsafePointer<Swift.UInt8>?, onActivityFinished: @convention(c) (Swift.Int32) -> Swift.Void) -> Swift.Bool
+public func shareImages(id: Swift::Int32, imagesPtr: Swift::UnsafePointer<Swift::UnsafeRawPointer?>?, sizes: Swift::UnsafePointer<Swift::Int32>?, count: Swift::Int32, textPtr: Swift::UnsafePointer<Swift::UInt8>?, titlePtr: Swift::UnsafePointer<Swift::UInt8>?, onActivityFinished: @convention(c) (Swift::Int32) -> Swift::Void) -> Swift::Bool
 @_cdecl("ushare_ios_share_files")
-public func shareFiles(id: Swift.Int32, pathsPtr: Swift.UnsafePointer<Swift.UnsafePointer<Swift.UInt8>?>?, count: Swift.Int32, textPtr: Swift.UnsafePointer<Swift.UInt8>?, titlePtr: Swift.UnsafePointer<Swift.UInt8>?, onActivityFinished: @convention(c) (Swift.Int32) -> Swift.Void) -> Swift.Bool
+public func shareFiles(id: Swift::Int32, pathsPtr: Swift::UnsafePointer<Swift::UnsafePointer<Swift::UInt8>?>?, count: Swift::Int32, textPtr: Swift::UnsafePointer<Swift::UInt8>?, titlePtr: Swift::UnsafePointer<Swift::UInt8>?, onActivityFinished: @convention(c) (Swift::Int32) -> Swift::Void) -> Swift::Bool
