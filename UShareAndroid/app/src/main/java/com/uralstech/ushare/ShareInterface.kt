@@ -57,8 +57,8 @@ class ShareInterface private constructor(private val context: Context, internal 
         }
 
         val dataIntent = Intent().apply {
-            setAction(Intent.ACTION_SEND)
-            setType("text/plain")
+            action = Intent.ACTION_SEND
+            type = "text/plain"
 
             addTextAndTitle(this, text, title)
         }
@@ -80,7 +80,7 @@ class ShareInterface private constructor(private val context: Context, internal 
         }
 
         val dataIntent = Intent().apply {
-            setAction(Intent.ACTION_SEND)
+            action = Intent.ACTION_SEND
             setType(type)
 
             putExtra(Intent.EXTRA_STREAM, uri)
@@ -105,7 +105,7 @@ class ShareInterface private constructor(private val context: Context, internal 
         }
 
         val dataIntent = Intent().apply {
-            setAction(Intent.ACTION_SEND_MULTIPLE)
+            action = Intent.ACTION_SEND_MULTIPLE
             setType(type)
 
             putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris.toCollection(ArrayList()))

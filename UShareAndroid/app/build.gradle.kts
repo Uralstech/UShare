@@ -12,7 +12,7 @@ base {
 
 android {
     namespace = moduleNamespace
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 23

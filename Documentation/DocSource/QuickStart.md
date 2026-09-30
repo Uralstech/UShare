@@ -2,7 +2,10 @@
 
 The examples in this guide are for demonstration purposes and may not reflect production best practices.
 
-This guide was last updated for UShare v2.0.0. UShare supports Android 6+ (API Level 23) and iOS 14+.
+This guide was last updated for UShare v2.0.0. UShare supports Android 6+ (API Level 23) and iOS 15+.
+
+> [!IMPORTANT]
+> The native iOS plugin does not yet support Unity's new Swift Xcode project type.
 
 ## Breaking Changes Notice
 
@@ -18,6 +21,21 @@ The new API adds:
 * Access to any temporary files created during share operations.
 
 Unlike previous versions, temporary files are **no longer deleted automatically**. If you create temporary files through the convenience APIs, your application is responsible for cleaning them up when appropriate.
+
+## Gradle Template Setup
+
+Since this package aims to use the latest stable version of core KTX, your app's launcher must be compiled against API level 37 or higher:
+
+- Under Player -> Publishing Settings, check "Custom Main Gradle Template" and "Custom Launcher Gradle Template" if they are unchecked.
+- Open the `launcherTemplate.gradle` file created in Assets -> Plugins -> Android, and change this line:
+```gradle
+compileSdk **APIVERSION**
+```
+to
+```gradle
+compileSdk 37
+```
+- Make the same change in `mainTemplate.gradle`
 
 ## `ShareSheetManagerV2`
 

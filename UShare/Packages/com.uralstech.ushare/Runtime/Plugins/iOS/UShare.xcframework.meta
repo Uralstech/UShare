@@ -55,7 +55,8 @@ PluginImporter:
         AddToEmbeddedBinaries: true
         CPU: AnyCPU
         CompileFlags: 
-        FrameworkDependencies: LinkPresentation;
+        FrameworkDependencies: CoreGraphics;Foundation;UIKit;LinkPresentation;
+        XcodeProjectType: All
   userData: 
   assetBundleName: 
   assetBundleVariant: 
